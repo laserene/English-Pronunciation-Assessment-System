@@ -9,7 +9,7 @@ import { useEffect, useRef, JSX } from "react";
 import { LAppDelegate } from "../../live2d/src/lappdelegate";
 import * as LAppDefine from "../../live2d/src/lappdefine";
 
-export default function Live2DCanvas(): JSX.Element {
+export default function Live2DPanel(): JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
