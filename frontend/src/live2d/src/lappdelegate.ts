@@ -246,7 +246,7 @@ export class LAppDelegate {
     for (let i = 0; i < LAppDefine.CanvasNum; i++) {
       const canvas = document.createElement('canvas');
       this._canvases.pushBack(canvas);
-      canvas.style.width = `${width}vw`;
+      canvas.style.width = `52vw`;
       canvas.style.height = `${height}vh`;
 
       // キャンバスを DOM に追加

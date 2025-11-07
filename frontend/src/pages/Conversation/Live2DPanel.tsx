@@ -43,11 +43,6 @@ export default function Live2DPanel(): JSX.Element {
     <div
       ref={containerRef}
       className="live2d-container"
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-      }}
     />
   );
 }

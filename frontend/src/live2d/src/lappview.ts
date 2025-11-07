@@ -131,7 +131,7 @@ export class LAppView {
       const y: number = height * 0.5;
 
       const fwidth = textureInfo.width * 2.0;
-      const fheight = height * 0.95;
+      const fheight = height;
       this._back = new LAppSprite(x, y, fwidth, fheight, textureInfo.id);
       this._back.setSubdelegate(this._subdelegate);
     };
