@@ -1,9 +1,10 @@
 import { JSX } from "react";
+import "../index.css"
 
 export default function MicVisualizer(): JSX.Element {
     return (
-        <>
-            <h1>This is MicVisualizer</h1>
-        </>
+        <div className="interaction-block">
+            This is MicVisualizer
+        </div>
     )
 }

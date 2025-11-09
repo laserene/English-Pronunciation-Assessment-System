@@ -1,19 +1,17 @@
-import { useState, JSX } from "react";
+import { JSX } from "react";
+import "../index.css";
+import CharacterPanel from "./CharacterPanel.tsx";
 import SuggestionPanel from "./SuggestionPanel.tsx";
+import ChatHistoryPanel from "./ChatHistoryPanel.tsx";
 import InputModePanel from "./InputModePanel.tsx";
-import MicVisualizer from "./MicVisualizer.tsx";
-import TypingInput from "./TypingInput.tsx";
 
 export default function InteractionPanel(): JSX.Element {
-  const [inputMode, setInputMode] = useState<"voice" | "keyboard">("voice");
   return (
     <div className="interaction-panel">
+      <CharacterPanel />
       <SuggestionPanel />
-      <>
-        {inputMode === "voice" && <MicVisualizer />}
-        <InputModePanel currentMode={inputMode} onModeChange={setInputMode} />
-        {inputMode === "keyboard" && <TypingInput />}
-      </>
+      <ChatHistoryPanel />
+      <InputModePanel />
     </div>
   );
 }

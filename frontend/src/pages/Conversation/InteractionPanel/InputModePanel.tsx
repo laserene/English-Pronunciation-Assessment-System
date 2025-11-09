@@ -1,29 +1,28 @@
-import { JSX } from "react";
+import { JSX, use, useState } from "react";
+import MicVisualizer from "./MicVisualizer.tsx";
+import TypingInput from "./TypingInput.tsx";
+import "../index.css";
 
-type InputModePanelProps = {
-  currentMode: "voice" | "keyboard" | null;
-  onModeChange: (mode: "voice" | "keyboard") => void;
-};
-
-export default function InputModePanel({
-  currentMode,
-  onModeChange,
-}: InputModePanelProps): JSX.Element {
+export default function InputModePanel(): JSX.Element {
+  const [inputMode, onModeChange] = useState<"voice" | "keyboard">("voice");
   return (
-    <div>
-      <button
-        onClick={() => onModeChange("voice")}
-        disabled={currentMode === "voice"}
-      >
-        🎤 Mic Mode
-      </button>
-
-      <button
-        onClick={() => onModeChange("keyboard")}
-        disabled={currentMode === "keyboard"}
-      >
-        ⌨️ Keyboard Mode
-      </button>
-    </div>
+    <>
+      {inputMode === "voice" && <MicVisualizer />}
+      {inputMode === "keyboard" && <TypingInput />}
+      <div className="interaction-block">
+        <button
+          onClick={() => onModeChange("voice")}
+          disabled={inputMode === "voice"}
+        >
+          🎤 Mic Mode
+        </button>
+        <button
+          onClick={() => onModeChange("keyboard")}
+          disabled={inputMode === "keyboard"}
+        >
+          ⌨️ Keyboard Mode
+        </button>
+      </div>
+    </>
   );
 }
