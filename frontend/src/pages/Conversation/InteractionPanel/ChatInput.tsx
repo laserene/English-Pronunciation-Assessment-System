@@ -1,7 +1,7 @@
 import { JSX, useEffect, useRef, useState } from "react";
 import "../index.css";
 
-export default function TypingInput(): JSX.Element {
+export default function ChatInput(): JSX.Element {
   const [userInput, setUserInput] = useState("");
 
   const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {

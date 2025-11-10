@@ -1,6 +1,6 @@
 import { JSX, useState } from "react";
 import MicVisualizer from "./MicVisualizer.tsx";
-import TypingInput from "./TypingInput.tsx";
+import ChatInput from "./ChatInput.tsx";
 import "../index.css";
 
 export default function InputModePanel(): JSX.Element {
@@ -17,7 +17,7 @@ export default function InputModePanel(): JSX.Element {
       >
         <div className="interaction-block-content-inner no-bottom-padding">
           {(inputMode === "voice" || inputMode === null) && <MicVisualizer />}
-          {inputMode === "typing" && <TypingInput />}
+          {inputMode === "typing" && <ChatInput />}
           <div className="mode-btn-panel">
             <button
               className={`mode-btn ${inputMode === "voice" ? "active" : ""}`}
