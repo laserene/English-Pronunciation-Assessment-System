@@ -72,20 +72,21 @@
   border-top: 1px solid #d0d0d0;
 }
 
-#input-mode-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  height: 100%;
-}
-
 .no-bottom-padding {
   padding-bottom: 0 !important;
 }
 
-.mode-panel {
-  flex: 1;
-  background-color: aqua;
+#input-mode-content {
+  transition: all 0.3s ease-in-out;
+}
+
+.user-input {
+  padding: 8px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 2px solid #d0d0d0;
+  max-height: 120px;
+  overflow-y: auto;
 }
 
 .mode-btn-panel {

@@ -5,7 +5,7 @@ import "../index.css";
 
 export default function InputModePanel(): JSX.Element {
   const [inputMode, onModeChange] = useState<"voice" | "typing" | null>(null);
-  const expandedHeight = "240px";
+  const expandedHeight = "auto";
   return (
     <div className="interaction-block">
       <div className="interaction-block-title-wrapper">
@@ -15,7 +15,7 @@ export default function InputModePanel(): JSX.Element {
         className="interaction-block-content expanded"
         style={{ "--expanded-height": expandedHeight } as React.CSSProperties}
       >
-        <div id="input-mode-content" className="interaction-block-content-inner no-bottom-padding">
+        <div className="interaction-block-content-inner no-bottom-padding">
           {(inputMode === "voice" || inputMode === null) && <MicVisualizer />}
           {inputMode === "typing" && <TypingInput />}
           <div className="mode-btn-panel">
