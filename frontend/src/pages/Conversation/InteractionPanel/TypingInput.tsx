@@ -3,7 +3,7 @@ import "../index.css"
 
 export default function TypingInput(): JSX.Element {
     return (
-        <div className="interaction-block">
+        <div>
             This is TypingInput
         </div>
     )

@@ -2,7 +2,7 @@ import { JSX, useState } from "react";
 import "../index.css";
 
 export default function SuggestionPanel(): JSX.Element {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };

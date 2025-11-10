@@ -54,7 +54,7 @@
 
 .interaction-block-content {
   height: 0;
-  overflow: hidden;
+  overflow-y: auto;
   transition: height 0.3s ease-in-out;
 }
 
