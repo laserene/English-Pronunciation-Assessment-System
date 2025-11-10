@@ -6,7 +6,7 @@ export default function SuggestionPanel(): JSX.Element {
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
-  const expandedHeight = "80px";
+  const expandedHeight = "120px";
   return (
     <div className="interaction-block">
       <div className="interaction-block-title-wrapper">

@@ -3,7 +3,7 @@ import "../index.css"
 
 export default function MicVisualizer(): JSX.Element {
     return (
-        <div>
+        <div className="mode-panel">
             This is MicVisualizer
         </div>
     )
