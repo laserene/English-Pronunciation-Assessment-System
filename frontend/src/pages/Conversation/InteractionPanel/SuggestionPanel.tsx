@@ -6,11 +6,12 @@ export default function SuggestionPanel(): JSX.Element {
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
+  const expandedHeight = "80px";
   return (
     <div className="interaction-block">
-      <div className={`interaction-block-title-wrapper`}>
+      <div className="interaction-block-title-wrapper">
         <div>Đề xuất</div>
-        <button id="toggle-suggestion" onClick={toggleExpanded}>
+        <button className="toggle-btn" onClick={toggleExpanded}>
           {isExpanded ? "Thu gọn ▲" : "Mở rộng ▼"}
         </button>
       </div>
@@ -18,6 +19,7 @@ export default function SuggestionPanel(): JSX.Element {
         className={`interaction-block-content ${
           isExpanded ? "expanded" : "collapsed"
         }`}
+        style={{ "--expanded-height": expandedHeight } as React.CSSProperties} 
       >
         <div className="interaction-block-content-inner">
           Đây là đề xuất cho bạn.
