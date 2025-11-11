@@ -49,7 +49,8 @@
   padding-right: 8px;
   border: none;
   border-radius: 10px;
-  background-color: #ffe9dd;
+  border: 2px solid #ff6e2d;
+  background-color: white;
   cursor: pointer;
 }
 
@@ -72,9 +73,6 @@
   border-top: 1px solid #d0d0d0;
 }
 
-.interaction-block-content-inner canvas {
-}
-
 .no-bottom-padding {
   padding-bottom: 0 !important;
 }
@@ -95,7 +93,7 @@
   background-color: #ffffff;
   border-radius: 8px;
   border: 2px solid #d0d0d0;
-  max-height: 120px;
+  max-height: 100px;
   overflow-y: auto;
 }
 
@@ -114,14 +112,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffe9dd;
+  border: 2px solid #ff6e2d;
+  background-color: white;
   margin: 12px;
-  color: #414141;
+  color: #fc3b00;
   transition: all 0.1s ease;
 }
 
 .mode-btn:hover {
-  opacity: 0.8;
+  background-color: #ffb28e;
 }
 
 .mode-btn:active {
@@ -129,6 +128,6 @@
 }
 
 .active {
-  filter: brightness(0.8);
+  background-color: #ffb28e;
   transform: scale(1.1);
 }

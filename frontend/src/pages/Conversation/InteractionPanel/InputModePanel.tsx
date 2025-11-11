@@ -9,7 +9,6 @@ export default function InputModePanel(): JSX.Element {
 
   // Audio functions
   const canvasRef = useRef(null);
-  const [isRecording, setIsRecording] = useState(false);
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
   const animationRef = useRef(null);
@@ -67,7 +66,6 @@ export default function InputModePanel(): JSX.Element {
     };
 
     draw();
-    setIsRecording(true);
   };
 
   const stopRecording = () => {
@@ -77,7 +75,6 @@ export default function InputModePanel(): JSX.Element {
     if (audioContextRef.current) {
       audioContextRef.current.close();
     }
-    setIsRecording(false);
   };
 
   return (
@@ -123,7 +120,7 @@ export default function InputModePanel(): JSX.Element {
               </svg>
             </button>
             <button
-              className="mode-btn"
+              className={`mode-btn ${inputMode === "typing" ? "active" : ""}`}
               onClick={() => {
                 onModeChange("typing");
                 stopRecording();
