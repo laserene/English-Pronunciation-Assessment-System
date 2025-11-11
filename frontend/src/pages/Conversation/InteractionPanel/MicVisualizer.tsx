@@ -1,10 +1,14 @@
 import { JSX } from "react";
-import "../index.css"
+import "../index.css";
 
-export default function MicVisualizer(): JSX.Element {
-    return (
-        <div className="mode-panel">
-            This is MicVisualizer
-        </div>
-    )
+export default function MicVisualizer({
+  canvasRef,
+}: {
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+}): JSX.Element {
+  return (
+    <>
+      <canvas ref={canvasRef} style={{ height: "100px", width: "100%" }} />
+    </>
+  );
 }

@@ -72,8 +72,18 @@
   border-top: 1px solid #d0d0d0;
 }
 
+.interaction-block-content-inner canvas {
+}
+
 .no-bottom-padding {
   padding-bottom: 0 !important;
+}
+
+#input_mode_panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
 }
 
 #input-mode-content {

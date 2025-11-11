@@ -1,4 +1,4 @@
-import { JSX, useState } from "react";
+import { JSX, useRef, useState } from "react";
 import MicVisualizer from "./MicVisualizer.tsx";
 import ChatInput from "./ChatInput.tsx";
 import "../index.css";
@@ -6,6 +6,80 @@ import "../index.css";
 export default function InputModePanel(): JSX.Element {
   const [inputMode, onModeChange] = useState<"voice" | "typing" | null>(null);
   const expandedHeight = "auto";
+
+  // Audio functions
+  const canvasRef = useRef(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const audioContextRef = useRef(null);
+  const analyserRef = useRef(null);
+  const animationRef = useRef(null);
+
+  const startRecording = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    const audioContext = new AudioContext();
+    audioContextRef.current = audioContext;
+
+    const source = audioContext.createMediaStreamSource(stream);
+
+    const analyser = audioContext.createAnalyser();
+    analyserRef.current = analyser;
+
+    analyser.fftSize = 1024;
+    analyser.smoothingTimeConstant = 0.85;
+    analyser.minDecibels = -70;
+    analyser.maxDecibels = -10;
+
+    source.connect(analyser);
+
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    const draw = () => {
+      animationRef.current = requestAnimationFrame(draw);
+
+      analyser.getByteFrequencyData(dataArray);
+
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      const width = canvas.width;
+      const height = canvas.height;
+
+      ctx.fillStyle = "rgba(255, 255, 255, 1)";
+      ctx.fillRect(0, 0, width, height);
+
+      const barWidth = 2;
+      const spacing = 4;
+
+      ctx.fillStyle = "rgba(151, 229, 255, 1)"; // Blue color
+
+      for (let i = 0; i < dataArray.length; i++) {
+        const normalized = dataArray[i] / 255;
+        const barHeight = normalized * (height * 1.6) + 2;
+
+        const x = i * spacing;
+        const y = height / 2 - barHeight / 2;
+
+        // Draw rounded bar
+        ctx.beginPath();
+        ctx.roundRect(x, y, barWidth, barHeight, barWidth / 2);
+        ctx.fill();
+      }
+    };
+
+    draw();
+    setIsRecording(true);
+  };
+
+  const stopRecording = () => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+    }
+    setIsRecording(false);
+  };
+
   return (
     <div className="interaction-block">
       <div className="interaction-block-title-wrapper">
@@ -15,8 +89,13 @@ export default function InputModePanel(): JSX.Element {
         className="interaction-block-content expanded"
         style={{ "--expanded-height": expandedHeight } as React.CSSProperties}
       >
-        <div className="interaction-block-content-inner no-bottom-padding">
-          {(inputMode === "voice" || inputMode === null) && <MicVisualizer />}
+        <div
+          id="input_mode_panel"
+          className="interaction-block-content-inner no-bottom-padding"
+        >
+          {(inputMode === "voice" || inputMode === null) && (
+            <MicVisualizer canvasRef={canvasRef} />
+          )}
           {inputMode === "typing" && <ChatInput />}
           <div className="mode-btn-panel">
             <button
@@ -24,6 +103,9 @@ export default function InputModePanel(): JSX.Element {
               onClick={() => {
                 if (inputMode === "voice") onModeChange(null);
                 else onModeChange("voice");
+
+                if (inputMode !== "voice") startRecording();
+                else stopRecording();
               }}
             >
               <svg
@@ -40,7 +122,13 @@ export default function InputModePanel(): JSX.Element {
                 />
               </svg>
             </button>
-            <button className="mode-btn" onClick={() => onModeChange("typing")}>
+            <button
+              className="mode-btn"
+              onClick={() => {
+                onModeChange("typing");
+                stopRecording();
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="2em"
