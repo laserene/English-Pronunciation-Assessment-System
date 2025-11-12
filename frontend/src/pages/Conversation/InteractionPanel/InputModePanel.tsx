@@ -8,6 +8,7 @@ export default function InputModePanel(): JSX.Element {
   const expandedHeight = "auto";
 
   // Audio functions
+  const streamRef = useRef(null);
   const canvasRef = useRef(null);
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
@@ -15,6 +16,7 @@ export default function InputModePanel(): JSX.Element {
 
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    streamRef.current = stream;
 
     const audioContext = new AudioContext();
     audioContextRef.current = audioContext;
@@ -69,6 +71,11 @@ export default function InputModePanel(): JSX.Element {
   };
 
   const stopRecording = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track: any) => track.stop());
+      streamRef.current = null;
+    }
+
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
     }
@@ -87,22 +94,26 @@ export default function InputModePanel(): JSX.Element {
         style={{ "--expanded-height": expandedHeight } as React.CSSProperties}
       >
         <div
-          id="input_mode_panel"
-          className="interaction-block-content-inner no-bottom-padding"
+          id="input-mode-container"
+          className="interaction-block-content-inner"
         >
           {(inputMode === "voice" || inputMode === null) && (
             <MicVisualizer canvasRef={canvasRef} />
           )}
           {inputMode === "typing" && <ChatInput />}
-          <div className="mode-btn-panel">
+          <div className="mode-btn-container">
             <button
-              className={`mode-btn ${inputMode === "voice" ? "active" : ""}`}
+              className={`conversation-btn mode-btn ${
+                inputMode === "voice" ? "active" : ""
+              }`}
               onClick={() => {
-                if (inputMode === "voice") onModeChange(null);
-                else onModeChange("voice");
-
-                if (inputMode !== "voice") startRecording();
-                else stopRecording();
+                if (inputMode === "voice") {
+                  onModeChange(null);
+                  stopRecording();
+                } else {
+                  onModeChange("voice");
+                  startRecording();
+                }
               }}
             >
               <svg
@@ -120,7 +131,9 @@ export default function InputModePanel(): JSX.Element {
               </svg>
             </button>
             <button
-              className={`mode-btn ${inputMode === "typing" ? "active" : ""}`}
+              className={`conversation-btn mode-btn ${
+                inputMode === "typing" ? "active" : ""
+              }`}
               onClick={() => {
                 onModeChange("typing");
                 stopRecording();
@@ -130,7 +143,7 @@ export default function InputModePanel(): JSX.Element {
                 xmlns="http://www.w3.org/2000/svg"
                 width="2em"
                 height="2em"
-                viewBox="0 0 24 24"
+                viewBox="0 -2 24 24"
               >
                 <g
                   fill="none"

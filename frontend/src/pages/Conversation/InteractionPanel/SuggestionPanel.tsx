@@ -11,7 +11,7 @@ export default function SuggestionPanel(): JSX.Element {
     <div className="interaction-block">
       <div className="interaction-block-title-wrapper">
         <div>Đề xuất</div>
-        <button className="toggle-btn" onClick={toggleExpanded}>
+        <button className="conversation-btn toggle-btn" onClick={toggleExpanded}>
           {isExpanded ? "Thu gọn ▲" : "Mở rộng ▼"}
         </button>
       </div>

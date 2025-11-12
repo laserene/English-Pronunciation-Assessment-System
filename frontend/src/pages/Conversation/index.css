@@ -1,3 +1,19 @@
+/* Element IDs */
+#input-mode-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  gap: 20px;
+}
+
+#character-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Component classes */
 .interaction-panel {
   overflow-y: auto;
   overflow-y: scroll;
@@ -42,16 +58,11 @@
 .interaction-block-title-wrapper .toggle-btn {
   font-family: inherit; /* inherit parent font-family */
   font-weight: inherit; /* inherit parent font-weight */
-  color: inherit; /* inherit parent color */
   font-size: inherit - 4; /* inherit font size */
   padding: 6px;
   padding-left: 8px;
   padding-right: 8px;
-  border: none;
   border-radius: 10px;
-  border: 2px solid #ff6e2d;
-  background-color: white;
-  cursor: pointer;
 }
 
 .interaction-block-content {
@@ -69,23 +80,9 @@
 }
 
 .interaction-block-content-inner {
+  height: 100%;
   padding: 16px;
   border-top: 1px solid #d0d0d0;
-}
-
-.no-bottom-padding {
-  padding-bottom: 0 !important;
-}
-
-#input_mode_panel {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  overflow: hidden;
-}
-
-#input-mode-content {
-  transition: all 0.3s ease-in-out;
 }
 
 .user-input {
@@ -97,36 +94,58 @@
   overflow-y: auto;
 }
 
-.mode-btn-panel {
+.mode-btn-container {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 20px;
+}
+
+.conversation-btn {
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid #ff6e2d;
+}
+
+.conversation-btn:hover {
+  background-color: #ffb28e;
 }
 
 .mode-btn {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #ff6e2d;
-  background-color: white;
-  margin: 12px;
   color: #fc3b00;
   transition: all 0.1s ease;
-}
-
-.mode-btn:hover {
-  background-color: #ffb28e;
 }
 
 .mode-btn:active {
   filter: brightness(0.8);
 }
 
+.character-item {
+  width: 68px;
+  height: 68px;
+  border-radius: 8px;
+  border: 4px solid #ff6e2d;
+}
+
+.avatar-haru {
+  background-image: url("../../assets/images/avatar_haru.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.avatar-haru:hover {
+  filter: brightness(0.8);
+}
+
+.add-character-btn {
+  border: 4px dashed #ff6e2d;
+  fill: #ff6e2d;
+}
+
+/* Helper classes */
 .active {
   background-color: #ffb28e;
   transform: scale(1.1);
