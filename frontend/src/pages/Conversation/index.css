@@ -74,6 +74,7 @@
 .interaction-block-content {
   height: 0;
   transition: height 0.3s ease-in-out;
+  overflow: hidden;
 }
 
 .interaction-block-content.expanded {
