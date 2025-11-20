@@ -7,7 +7,7 @@ class SenderType(str, Enum):
     bot = "bot"
     system = "suggestion"
 
-class MessageCreate(BaseModel):
+class MessageRequest(BaseModel):
     text: str = Field(..., min_length=1)
     conversation_id: int
     user_id: int

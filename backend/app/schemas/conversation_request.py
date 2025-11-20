@@ -1,4 +1,4 @@
 from pydantic import BaseModel
 
-class ConversationCreate(BaseModel):
+class ConversationRequest(BaseModel):
     user_id: int
