@@ -1,11 +1,8 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.pool import StaticPool
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import engine, Base
-from app.routers import user_routes, conversation_routes, message_routes
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -26,12 +23,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Include Routers
-app.include_router(user_routes.router)
-app.include_router(conversation_routes.router)
-app.include_router(message_routes.router)
-
-
-@app.get("/health")
-async def health_check():
-    return {"status": "healthy"}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
