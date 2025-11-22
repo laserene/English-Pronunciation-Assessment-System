@@ -3,10 +3,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import engine, Base
+from app.models import User, Conversation, Message
+from app.routers import user_routers, conversation_routers, message_routers
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Create tables on startup, clean up on shutdown"""
     # Startup: Create all tables
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -30,3 +31,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(user_routers)
+app.include_router(conversation_routers)
+app.include_router(message_routers)
+
