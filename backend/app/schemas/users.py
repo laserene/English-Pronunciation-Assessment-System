@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field, EmailStr, Optional
+from pydantic import BaseModel, Field, EmailStr
+from typing import Optional
 
 
 class UserRequest(BaseModel):
@@ -10,4 +11,3 @@ class UserRequest(BaseModel):
                             description="User email address")
     password: str = Field(..., min_length=6,
                           description="Password (min 6 characters)")
-    

@@ -1,9 +1,9 @@
 from .users import UserRequest
 from .conversations import ConversationRequest
-from .messages import MessageCreateRequest, MessageResponse
+from .messages import MessageRequest
 
 __all__ = [
     "UserRequest",
     "ConversationRequest",
-    "MessageCreateRequest",
+    "MessageRequest",
 ]
