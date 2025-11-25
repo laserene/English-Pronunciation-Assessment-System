@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Path, Depends, HTTPException
-from sqlalchemy.future import select
 from sqlalchemy.orm import Session
 from starlette import status
-from app.models import Conversation, Message
 from app.database import get_db
 from app.schemas import ConversationRequest
+from app.services.conversations import create_conversation_service
+from app.services.messages import get_messages_from_conversation_service
 
 router = APIRouter(prefix="/conversations", tags=["conversations"])
 
@@ -18,13 +18,8 @@ async def create_conversation(
     Create a new conversation for a specific user.
     """
     try:
-        new_conversation = Conversation(
-            user_id=request.user_id
-        )
-        db.add(new_conversation)
+        new_conversation = await create_conversation_service(request, db)
         await db.commit()
-        await db.refresh(new_conversation)
-
         return {"conversation": new_conversation}
     except Exception as e:
         await db.rollback()
@@ -42,10 +37,13 @@ async def get_messages_from_conversation(
     """
     Retrieve messages for a specific conversation.
     """
-    # Query messages directly
-    messages = await db.execute(
-        select(Message).where(Message.conversation_id == conversation_id)
-    )
-    messages = messages.scalars().all()
-
-    return {"messages": messages}
+    try:
+        messages = await get_messages_from_conversation_service(conversation_id, db)
+        await db.commit()
+        return {"messages": messages}
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to retrieve messages: {str(e)}"
+        )

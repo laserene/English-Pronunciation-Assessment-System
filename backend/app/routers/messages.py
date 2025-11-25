@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Path, Depends, HTTPException
-from sqlalchemy.future import select
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
 from app.models import Message
 from app.database import get_db
 from app.schemas import MessageRequest
+from app.services.messages import create_message_service
 
 router = APIRouter(prefix="/messages", tags=["messages"])
 
@@ -18,16 +18,13 @@ async def create_message(
     Create a new message in a specific conversation.
     """
     try:
-        new_message = Message(
+        new_message = await create_message_service(
             conversation_id=request.conversation_id,
             sender_id=request.sender_id,
             content=request.content,
-            timestamp=request.timestamp,
+            db=db
         )
-        db.add(new_message)
         await db.commit()
-        await db.refresh(new_message)
-
         return {"message": new_message}
     except Exception as e:
         await db.rollback()
