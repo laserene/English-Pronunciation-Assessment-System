@@ -20,10 +20,10 @@ class Message(Base):
     conversation_id = Column(Integer, ForeignKey(
         "conversations.id"), nullable=False, index=True)
     user_id = Column(Integer, ForeignKey("users.id"),
-                     nullable=False, index=True)
+                     nullable=True, index=True)
     type = Column(Enum(MessageType), nullable=False)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     user = relationship("User", back_populates="messages")
     conversation = relationship("Conversation", back_populates="messages")
