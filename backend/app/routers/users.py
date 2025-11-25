@@ -1,16 +1,25 @@
 from fastapi import APIRouter, Path, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from app.database import get_db
 from app.services.conversations import get_conversations_from_user_service
+from app.auth.oauth2 import get_current_user
 
 router = APIRouter(prefix="/users", tags=["users"])
+
+
+@router.get("/protected", status_code=status.HTTP_200_OK)
+async def protected_route(current_user=Depends(get_current_user)):
+    """
+    A protected route to verify authentication.
+    """
+    return {"current_user": current_user}
 
 
 @router.get("/{user_id}/conversations", status_code=status.HTTP_200_OK)
 async def get_conversations_from_user(
     user_id: int = Path(..., gt=0),
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ):
     """
     Retrieve conversations for a specific user.

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from app.database import get_db
 from app.schemas import MessageRequest
@@ -11,7 +11,7 @@ router = APIRouter(prefix="/messages", tags=["messages"])
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_message(
     request: MessageRequest,
-    db: Session = Depends(get_db),
+    db: AsyncSession = Depends(get_db),
 ):
     """
     Create a new message in a specific conversation.

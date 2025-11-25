@@ -1,5 +1,5 @@
 from fastapi import Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import Optional
 from app.models import Message, MessageType
@@ -12,7 +12,7 @@ async def create_message_service(
         conversation_id: int,
         user_id: int,
         type: MessageType,
-        db: Session = Depends(get_db)
+        db: AsyncSession = Depends(get_db)
 ):
     new_message = Message(
         text=text,
@@ -27,7 +27,7 @@ async def create_message_service(
     return new_message
 
 
-async def get_messages_from_conversation_service(conversation_id: int, db: Session = Depends(get_db)):
+async def get_messages_from_conversation_service(conversation_id: int, db: AsyncSession = Depends(get_db)):
     messages = await db.execute(
         select(Message).where(Message.conversation_id == conversation_id)
     )

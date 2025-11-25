@@ -1,11 +1,11 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.models import Conversation
 from fastapi import Depends
 from app.database import get_db
 
 
-async def create_conversation_service(user_id: int, db: Session = Depends(get_db)):
+async def create_conversation_service(user_id: int, db: AsyncSession = Depends(get_db)):
     new_conversation = Conversation(
         user_id=user_id
     )
@@ -15,7 +15,7 @@ async def create_conversation_service(user_id: int, db: Session = Depends(get_db
     return new_conversation
 
 
-async def get_conversations_from_user_service(user_id: int, db: Session = Depends(get_db)):
+async def get_conversations_from_user_service(user_id: int, db: AsyncSession = Depends(get_db)):
     conversations = await db.execute(
         select(Conversation).where(
             Conversation.user_id == user_id

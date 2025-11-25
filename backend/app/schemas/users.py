@@ -11,3 +11,10 @@ class UserRequest(BaseModel):
                             description="User email address")
     password: str = Field(..., min_length=6,
                           description="Password (min 6 characters)")
+
+
+class UserLoginRequest(BaseModel):
+    email: EmailStr = Field(..., max_length=120,
+                            description="User email address")
+    password: str = Field(..., min_length=6,
+                          description="Password (min 6 characters)")

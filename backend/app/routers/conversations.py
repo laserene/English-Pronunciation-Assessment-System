@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Path, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from app.database import get_db
 from app.schemas import ConversationRequest
@@ -12,7 +12,7 @@ router = APIRouter(prefix="/conversations", tags=["conversations"])
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_conversation(
     request: ConversationRequest,
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ):
     """
     Create a new conversation for a specific user.
@@ -32,7 +32,7 @@ async def create_conversation(
 @router.get("/{conversation_id}/messages", status_code=status.HTTP_200_OK)
 async def get_messages_from_conversation(
     conversation_id: int = Path(..., gt=0),
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_db)
 ):
     """
     Retrieve messages for a specific conversation.
