@@ -21,5 +21,5 @@ async def get_conversations_from_user(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(e)
+            detail=f"Failed to retrieve conversations: {str(e)}"
         )
