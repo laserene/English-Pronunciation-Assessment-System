@@ -18,7 +18,7 @@ async def create_conversation(
     Create a new conversation for a specific user.
     """
     try:
-        new_conversation = await create_conversation_service(request, db)
+        new_conversation = await create_conversation_service(user_id=request.user_id, db=db)
         await db.commit()
         return {"conversation": new_conversation}
     except Exception as e:

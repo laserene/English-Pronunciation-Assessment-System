@@ -1,15 +1,25 @@
+from fastapi import Depends
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
-from app.models import Message
-from fastapi import Depends
+from typing import Optional
+from app.models import Message, MessageType
 from app.database import get_db
 
 
-async def create_message_service(conversation_id: int, sender_id: int, content: str, db: Session = Depends(get_db)):
+async def create_message_service(
+        text: str,
+        audio_path: str,
+        conversation_id: int,
+        user_id: int,
+        type: MessageType,
+        db: Session = Depends(get_db)
+):
     new_message = Message(
+        text=text,
+        audio_path=audio_path,
         conversation_id=conversation_id,
-        sender_id=sender_id,
-        content=content
+        user_id=user_id,
+        type=type,
     )
     db.add(new_message)
     await db.flush()

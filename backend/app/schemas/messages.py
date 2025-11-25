@@ -16,6 +16,7 @@ class MessageRequest(BaseModel):
     audio_path: Optional[str] = Field(
         None, description="Path to the audio file associated with the message")
     conversation_id: int = Field(..., description="ID of the conversation")
-    user_id: int = Field(..., description="ID of the user sending the message")
+    user_id: Optional[int] = Field(
+        None, description="ID of the user sending the message")
     type: MessageType = Field(...,
                               description="Type of the message (LLM, USER, LLM_SUGGESTION)")

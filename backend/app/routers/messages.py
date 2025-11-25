@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
-from app.models import Message
 from app.database import get_db
 from app.schemas import MessageRequest
 from app.services.messages import create_message_service
@@ -19,9 +18,11 @@ async def create_message(
     """
     try:
         new_message = await create_message_service(
+            text=request.text,
+            audio_path=request.audio_path,
             conversation_id=request.conversation_id,
-            sender_id=request.sender_id,
-            content=request.content,
+            user_id=request.user_id,
+            type=request.type,
             db=db
         )
         await db.commit()
