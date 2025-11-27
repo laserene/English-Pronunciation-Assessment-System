@@ -1,12 +1,26 @@
-import { JSX, useEffect, useRef } from "react";
-import "../index.css";
+import { JSX, useState, useEffect, useRef } from "react";
+import axios from "axios";
 import InputModePanel from "./InputModePanel.tsx";
+import "../index.css";
 
 export default function SuggestionPanel(): JSX.Element {
+  const [messages, setMessages] = useState([]);
+
   const expandedHeight = "320px";
   const messageContainer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    async function fetchMessages() {
+      try {
+        const response : any = await axios.get("http://127.0.0.1:8000/conversations/1/messages");
+        setMessages(response.data.messages);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    }
+
+    fetchMessages();
+
     setTimeout(() => {
       if (messageContainer.current) {
         messageContainer.current.scrollTop =
@@ -29,27 +43,16 @@ export default function SuggestionPanel(): JSX.Element {
           className="interaction-block-content-inner"
           ref={messageContainer}
         >
-          <div className="message-item receiver">Hi</div>
-          <div className="message-item sender">
-            HelloHow about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?
-          </div>
-          <div className="message-item receiver">
-            HelloHow about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?How about your seizing the words?How about your seizing the
-            words?
-          </div>
+          {messages.map((msg: any, index: number) => (
+            <div
+              key={index}
+              className={`message-item ${
+                msg.user_id === null ? "receiver" : "sender"
+              }`}
+            >
+              {msg.text}
+            </div>
+          ))}
         </div>
       </div>
       <InputModePanel />

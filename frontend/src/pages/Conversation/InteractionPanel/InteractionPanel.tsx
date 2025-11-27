@@ -7,7 +7,7 @@ import "../index.css";
 export default function InteractionPanel(): JSX.Element {
   return (
     <div className="interaction-panel">
-      <CharacterPanel />
+      {/* <CharacterPanel /> */}
       <SuggestionPanel />
       <ChatHistoryPanel />
     </div>

@@ -174,3 +174,7 @@
   background-color: #ffb28e;
   transform: scale(1.1);
 }
+
+.flex {
+  display: flex;
+}
