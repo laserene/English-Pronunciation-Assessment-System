@@ -1,11 +1,17 @@
 /* global.css */
 body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
+  font-family: "Google Sans Flex", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 480;
+  font-style: normal;
+  font-variation-settings: "slnt" 0, "wdth" 100, "GRAD" 60, "ROND" 0;
+
   background-color: #fafafa;
   color: #222;
 }
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }

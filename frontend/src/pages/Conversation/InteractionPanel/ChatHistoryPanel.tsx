@@ -32,7 +32,7 @@ export default function SuggestionPanel(): JSX.Element {
   return (
     <div className="interaction-block">
       <div className="interaction-block-title-wrapper">
-        <div>Cuộc trò chuyện</div>
+        <div>Chat History</div>
       </div>
       <div
         className="interaction-block-content expanded"
