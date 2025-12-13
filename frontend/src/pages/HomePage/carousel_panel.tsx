@@ -1,18 +1,17 @@
-import { useRef, useState, Children } from "react";
+import { useRef, useState } from "react";
 
 export default function CarouselPanel({
   title,
   children,
+  scrollAmount = 280
 }: {
   title: string;
   children?: React.ReactNode;
+  scrollAmount?: number;
 }) {
   const scrollRef = useRef(null);
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
-
-  const childCount = Children.count(children);
-  const isMoreThanFourCards = childCount > 4;
 
   const checkScroll = () => {
     if (scrollRef.current) {
@@ -24,10 +23,8 @@ export default function CarouselPanel({
 
   };
 
-  const scroll = (direction) => {
+  const scroll = (direction: string | null) => {
     if (scrollRef.current) {
-      const scrollAmount = 280;
-
       if (
         direction === "left" &&
         scrollRef.current.scrollLeft <= scrollAmount
@@ -57,7 +54,7 @@ export default function CarouselPanel({
           </button>
         )}
 
-        {!isAtEnd && isMoreThanFourCards && (
+        {!isAtEnd && (
           <button
             onClick={() => scroll("right")}
             className="carousel-btn right-carousel-btn"

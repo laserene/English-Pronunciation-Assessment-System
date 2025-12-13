@@ -31,7 +31,7 @@ export default function ScenarioPanel(): JSX.Element {
         {items.map((item) => (
           <div
             key={item.id}
-            className="scenario-item"
+            className="carousel-item"
             style={{
               backgroundImage: `url(${item.background_url || "https://i.pinimg.com/1200x/9a/06/01/9a06011eb18bc859474dd22d003cd57c.jpg"
                 })`,
