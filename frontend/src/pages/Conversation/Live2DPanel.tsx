@@ -13,36 +13,21 @@ export default function Live2DPanel(): JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    /**
-     * ブラウザロード後の処理
-     */
-    window.addEventListener(
-      "load",
-      (): void => {
-        // Initialize WebGL and create the application instance
-        if (!LAppDelegate.getInstance().initialize(containerRef.current)) {
-          return;
-        }
+    // Initialize and run Live2D when the component mounts
+    const init = () => {
+      const app = LAppDelegate.getInstance();
+      if (!app.initialize(containerRef.current)) return;
+      app.run();
+    };
 
-        LAppDelegate.getInstance().run();
-      },
-      { passive: true }
-    );
+    init();
 
-    /**
-     * 終了時の処理
-     */
-    window.addEventListener(
-      "beforeunload",
-      (): void => LAppDelegate.releaseInstance(),
-      { passive: true }
-    );
+    // Cleanup on component unmount (when leaving the page)
+    return () => {
+      LAppDelegate.releaseInstance();
+    };
   }, []);
 
-  return (
-    <div
-      ref={containerRef}
-      className="live2d-container"
-    />
-  );
+  return <div ref={containerRef} className="live2d-container" />;
 }
+

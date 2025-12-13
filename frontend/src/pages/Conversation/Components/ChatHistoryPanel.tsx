@@ -1,9 +1,8 @@
 import { JSX, useState, useEffect, useRef } from "react";
 import axios from "axios";
-import InputModePanel from "./InputModePanel.tsx";
-import "../index.css";
+import "./index.css";
 
-export default function SuggestionPanel(): JSX.Element {
+export default function SuggestionPanel({ children }: { children?: React.ReactNode }): JSX.Element {
   const [messages, setMessages] = useState([]);
 
   const expandedHeight = "320px";
@@ -12,7 +11,7 @@ export default function SuggestionPanel(): JSX.Element {
   useEffect(() => {
     async function fetchMessages() {
       try {
-        const response : any = await axios.get("http://127.0.0.1:8000/conversations/1/messages");
+        const response = await axios.get("http://127.0.0.1:8000/conversations/1/messages");
         setMessages(response.data.messages);
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -43,19 +42,18 @@ export default function SuggestionPanel(): JSX.Element {
           className="interaction-block-content-inner"
           ref={messageContainer}
         >
-          {messages.map((msg: any, index: number) => (
+          {messages.map((msg, index: number) => (
             <div
               key={index}
-              className={`message-item ${
-                msg.user_id === null ? "receiver" : "sender"
-              }`}
+              className={`message-item ${msg.user_id === null ? "receiver" : "sender"
+                }`}
             >
               {msg.text}
             </div>
           ))}
         </div>
       </div>
-      <InputModePanel />
+      {children}
     </div>
   );
 }

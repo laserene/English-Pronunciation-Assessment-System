@@ -1,10 +1,20 @@
 import { JSX, useRef, useState } from "react";
 import MicVisualizer from "./MicVisualizer.tsx";
 import ChatInput from "./ChatInput.tsx";
-import "../index.css";
+import "./index.css";
 
-export default function InputModePanel(): JSX.Element {
-  const [inputMode, onModeChange] = useState<"voice" | "typing" | null>(null);
+interface InputModePanelProps {
+  showVoiceButton?: boolean;
+  showTypingButton?: boolean;
+  defaultMode?: "voice" | "typing" | null;
+}
+
+export default function InputModePanel({
+  showVoiceButton = true,
+  showTypingButton = true,
+  defaultMode = null
+}: InputModePanelProps): JSX.Element {
+  const [inputMode, onModeChange] = useState<"voice" | "typing" | null>(defaultMode);
   const expandedHeight = "auto";
 
   // Audio functions
@@ -98,61 +108,63 @@ export default function InputModePanel(): JSX.Element {
         )}
         {inputMode === "typing" && <ChatInput />}
         <div className="mode-btn-container">
-          <button
-            className={`conversation-btn mode-btn ${
-              inputMode === "voice" ? "active" : ""
-            }`}
-            onClick={() => {
-              if (inputMode === "voice") {
-                onModeChange(null);
-                stopRecording();
-              } else {
-                onModeChange("voice");
-                startRecording();
-              }
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="-12 -12 48 48"
-              strokeWidth={1.5}
-              stroke="currentColor"
+          {showVoiceButton && (
+            <button
+              className={`conversation-btn mode-btn ${inputMode === "voice" ? "active" : ""
+                }`}
+              onClick={() => {
+                if (inputMode === "voice") {
+                  onModeChange(null);
+                  stopRecording();
+                } else {
+                  onModeChange("voice");
+                  startRecording();
+                }
+              }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"
-              />
-            </svg>
-          </button>
-          <button
-            className={`conversation-btn mode-btn ${
-              inputMode === "typing" ? "active" : ""
-            }`}
-            onClick={() => {
-              onModeChange("typing");
-              stopRecording();
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="2em"
-              height="2em"
-              viewBox="0 -2 24 24"
-            >
-              <g
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
+                viewBox="-12 -12 48 48"
+                strokeWidth={1.5}
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
               >
-                <path d="M10 8h.01M12 12h.01M14 8h.01M16 12h.01M18 8h.01M6 8h.01M7 16h10m-9-4h.01"></path>
-                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-              </g>
-            </svg>
-          </button>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"
+                />
+              </svg>
+            </button>
+          )}
+          {showTypingButton && (
+            <button
+              className={`conversation-btn mode-btn ${inputMode === "typing" ? "active" : ""
+                }`}
+              onClick={() => {
+                onModeChange("typing");
+                stopRecording();
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="2em"
+                height="2em"
+                viewBox="0 -2 24 24"
+              >
+                <g
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                >
+                  <path d="M10 8h.01M12 12h.01M14 8h.01M16 12h.01M18 8h.01M6 8h.01M7 16h10m-9-4h.01"></path>
+                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                </g>
+              </svg>
+            </button>
+          )}
         </div>
       </div>
     </div>

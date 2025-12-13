@@ -1,5 +1,5 @@
 import { JSX, useEffect, useRef, useState } from "react";
-import "../index.css";
+import "./index.css";
 
 export default function ChatInput(): JSX.Element {
   const [userInput, setUserInput] = useState("");

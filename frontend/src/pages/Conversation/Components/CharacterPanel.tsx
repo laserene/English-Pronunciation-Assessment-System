@@ -1,5 +1,5 @@
 import { JSX, useState } from "react";
-import "../index.css";
+import "./index.css";
 
 export default function SuggestionPanel(): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -19,9 +19,8 @@ export default function SuggestionPanel(): JSX.Element {
         </button>
       </div>
       <div
-        className={`interaction-block-content ${
-          isExpanded ? "expanded" : "collapsed"
-        }`}
+        className={`interaction-block-content ${isExpanded ? "expanded" : "collapsed"
+          }`}
         style={{ "--expanded-height": expandedHeight } as React.CSSProperties}
       >
         <div
