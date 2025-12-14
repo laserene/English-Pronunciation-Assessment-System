@@ -8,6 +8,7 @@ import EconomyImage from "../../assets/images/premium_photo-1670176446562-5c9712
 import EnvironmentImage from "../../assets/images/7329c391ef63545d275a94b0c2d3f40a.jpg";
 import SocialNetworkImage from "../../assets/images/346e367abed9d42893fe2a50eb305e0d.jpg";
 import FoodImage from "../../assets/images/772f414e5f29bd8b205a668d28ffc92b.jpg";
+import PlaceholderImage from "../../assets/images/9a06011eb18bc859474dd22d003cd57c.jpg"
 import "./index.css";
 
 export default function ScenarioPanel(): JSX.Element {
@@ -21,7 +22,7 @@ export default function ScenarioPanel(): JSX.Element {
 
   const navigate = useNavigate();
   const handleClick = (topic: string, vocabulary: Array<string>) => {
-    navigate("/conversation", { state: { topic, vocabulary } });
+    navigate(`/scenario/${topic.toLocaleLowerCase()}`, { state: { topic, vocabulary } });
   };
 
   return (
@@ -33,8 +34,7 @@ export default function ScenarioPanel(): JSX.Element {
             key={item.id}
             className="carousel-item"
             style={{
-              backgroundImage: `url(${item.background_url || "https://i.pinimg.com/1200x/9a/06/01/9a06011eb18bc859474dd22d003cd57c.jpg"
-                })`,
+              backgroundImage: `url(${item.background_url || PlaceholderImage})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

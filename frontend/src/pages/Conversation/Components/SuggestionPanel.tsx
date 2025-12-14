@@ -10,9 +10,9 @@ export default function SuggestionPanel(): JSX.Element {
   return (
     <div className="interaction-block">
       <div className="interaction-block-title-wrapper">
-        <div>Đề xuất</div>
+        <div>Suggestions</div>
         <button className="conversation-btn toggle-btn" onClick={toggleExpanded}>
-          {isExpanded ? "Thu gọn ▲" : "Mở rộng ▼"}
+          {isExpanded ? "Collapse ▲" : "Expand ▼"}
         </button>
       </div>
       <div
@@ -21,7 +21,7 @@ export default function SuggestionPanel(): JSX.Element {
         style={{ "--expanded-height": expandedHeight } as React.CSSProperties}
       >
         <div className="interaction-block-content-inner">
-          Đây là đề xuất cho bạn.
+          These are recommended words.
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function CarouselPanel({
   title,
@@ -13,16 +13,16 @@ export default function CarouselPanel({
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
 
+  // Set starting and ending point value
   const checkScroll = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
       setIsAtStart(scrollLeft < 10);
       setIsAtEnd(scrollLeft >= scrollWidth - clientWidth - 10);
     }
-
-
   };
 
+  // Scrolling
   const scroll = (direction: string | null) => {
     if (scrollRef.current) {
       if (
@@ -39,6 +39,15 @@ export default function CarouselPanel({
     }
   };
 
+  // Check if carousel is overflow, then change left-scroll-button visibility
+  const [isOverflowX, setIsOverflowX] = useState(false);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    setIsOverflowX(el.scrollWidth > el.clientWidth);
+  }, []);
+
   return (
     <div style={{ marginBottom: "64px" }}>
       <div className="carousel-panel-title">{title}</div>
@@ -54,7 +63,7 @@ export default function CarouselPanel({
           </button>
         )}
 
-        {!isAtEnd && (
+        {!isAtEnd && isOverflowX && (
           <button
             onClick={() => scroll("right")}
             className="carousel-btn right-carousel-btn"

@@ -17,7 +17,7 @@ export default function RolePlayPanel(): JSX.Element {
 
     return (
         <div>
-            <CarouselPanel title="Role-Play" scrollAmount={360}>
+            <CarouselPanel title="Role-Play." scrollAmount={360}>
                 {items.map((item) => (
                     <div
                         key={item.id}
