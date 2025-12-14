@@ -4,7 +4,7 @@ import { ScenarioContext } from "./scenario_context.tsx";
 import Live2DPanel from "./Live2DPanel.tsx";
 import InteractionPanel from "./Components/InteractionPanel.tsx";
 import SuggestionPanel from "./Components/SuggestionPanel.tsx";
-import ChatPanel from "./Components/ChatPanel.tsx";
+import MessagePanel from "./Components/MessagePanel.tsx";
 import InputModePanel from "./Components/InputModePanel.tsx";
 
 export default function LearnByScenarios(): JSX.Element {
@@ -18,9 +18,9 @@ export default function LearnByScenarios(): JSX.Element {
                 <Live2DPanel />
                 <InteractionPanel>
                     <SuggestionPanel />
-                    <ChatPanel>
+                    <MessagePanel>
                         <InputModePanel showVoiceButton={true} showTypingButton={false} />
-                    </ChatPanel>
+                    </MessagePanel>
                 </InteractionPanel>
             </div>
         </ScenarioContext.Provider>
