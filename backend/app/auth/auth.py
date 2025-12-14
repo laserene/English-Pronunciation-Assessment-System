@@ -17,7 +17,6 @@ async def register(request: UserRequest, db: AsyncSession = Depends(get_db)):
     Register a new user.
     """
     try:
-        print(f"Here is pass {request.password}")
         new_user = await register_service(
             username=request.username,
             email=request.email,

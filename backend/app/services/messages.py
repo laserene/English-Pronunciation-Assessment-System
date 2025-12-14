@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from app.models import Message, MessageType
+from app.models import Message
 from app.database import get_db
 
 
@@ -10,7 +10,7 @@ async def create_message_service(
     audio_path: str,
     conversation_id: int,
     user_id: int,
-    type: MessageType,
+    type: str,
     db: AsyncSession = Depends(get_db),
 ):
     new_message = Message(

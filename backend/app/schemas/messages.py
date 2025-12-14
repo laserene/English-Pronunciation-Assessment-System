@@ -1,12 +1,5 @@
 from pydantic import BaseModel, Field
 from typing import Optional
-from enum import Enum
-
-
-class MessageType(str, Enum):
-    LLM = "LLM"
-    USER = "USER"
-    LLM_SUGGESTION = "LLM_SUGGESTION"
 
 
 class MessageRequest(BaseModel):
@@ -19,6 +12,4 @@ class MessageRequest(BaseModel):
     user_id: Optional[int] = Field(
         None, description="ID of the user sending the message"
     )
-    type: MessageType = Field(
-        ..., description="Type of the message (LLM, USER, LLM_SUGGESTION)"
-    )
+    type: str = Field(..., description="Type of the message (USER, AI)")
