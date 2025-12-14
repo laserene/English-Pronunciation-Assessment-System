@@ -4,8 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.auth import auth_routers
 from app.database import engine, Base
-from app.models import User, Conversation, Message
 from app.routers import user_routers, conversation_routers, message_routers
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -37,4 +37,3 @@ app.include_router(auth_routers)
 app.include_router(user_routers)
 app.include_router(conversation_routers)
 app.include_router(message_routers)
-

@@ -22,7 +22,7 @@ async def register(request: UserRequest, db: AsyncSession = Depends(get_db)):
             username=request.username,
             email=request.email,
             password=request.password,
-            db=db
+            db=db,
         )
         await db.commit()
         return {"user": new_user}
@@ -30,7 +30,7 @@ async def register(request: UserRequest, db: AsyncSession = Depends(get_db)):
         await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to register: {str(e)}"
+            detail=f"Failed to register: {str(e)}",
         )
 
 
@@ -40,26 +40,18 @@ async def login(user_credentials: UserLoginRequest, db: AsyncSession = Depends(g
         user = await get_user_by_email_service(user_credentials.email, db)
         if not authenticate_user(user, user_credentials.password):
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid credentials"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
             )
-        access_token = create_token(
-            data={"sub": str(user.id)}, token_type="access"
-        )
-        refresh_token = create_token(
-            data={"sub": str(user.id)}, token_type="refresh"
-        )
+        access_token = create_token(data={"sub": str(user.id)}, token_type="access")
+        refresh_token = create_token(data={"sub": str(user.id)}, token_type="refresh")
         return {
             "access_token": access_token,
             "refresh_token": refresh_token,
-            "token_type": "bearer"
+            "token_type": "bearer",
         }
 
     except HTTPException:
         raise
 
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Internal server error: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")

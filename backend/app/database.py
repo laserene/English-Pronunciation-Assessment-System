@@ -9,9 +9,7 @@ engine = create_async_engine(
     pool_pre_ping=True,
 )
 
-async_session_local = sessionmaker(
-    engine, class_=AsyncSession, expire_on_commit=False
-)
+async_session_local = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 Base = declarative_base()
 

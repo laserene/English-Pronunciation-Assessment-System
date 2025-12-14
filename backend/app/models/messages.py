@@ -1,29 +1,25 @@
-from sqlalchemy import Column, Integer, DateTime, ForeignKey, Text, Enum, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, DateTime, ForeignKey, String
 from app.database import Base
 from datetime import datetime, timezone
-import enum
-
-
-class MessageType(enum.Enum):
-    LLM = "LLM"
-    USER = "USER"
-    LLM_SUGGESTION = "LLM_SUGGESTION"
 
 
 class Message(Base):
     __tablename__ = "messages"
 
     id = Column(Integer, primary_key=True, index=True)
-    text = Column(Text, nullable=False)
-    audio_path = Column(String(120), nullable=True)
-    conversation_id = Column(Integer, ForeignKey(
-        "conversations.id"), nullable=False, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"),
-                     nullable=True, index=True)
-    type = Column(Enum(MessageType), nullable=False)
-    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    conversation_id = Column(
+        Integer, ForeignKey("conversations.id"), nullable=False, index=True
+    )
 
-    user = relationship("User", back_populates="messages")
-    conversation = relationship("Conversation", back_populates="messages")
+    sender = Column(String, nullable=False)  # USER | AI
+    content_text = Column(String, nullable=True)
+    audio_path = Column(String, nullable=True)
+
+    created_at = Column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
+    )
+    updated_at = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )

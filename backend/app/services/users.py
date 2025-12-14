@@ -6,12 +6,15 @@ from app.database import get_db
 from app.services.auth import get_password_hash
 
 
-async def register_service(username: str, email: str, password: str, db: AsyncSession = Depends(get_db)):
+async def register_service(
+    username: str, email: str, password: str, db: AsyncSession = Depends(get_db)
+):
     """
     Register a new user with the provided email and password.
     """
-    new_user = User(username=username, email=email,
-                    password_hash=get_password_hash(password))
+    new_user = User(
+        username=username, email=email, password_hash=get_password_hash(password)
+    )
     db.add(new_user)
     await db.flush()
     await db.refresh(new_user)

@@ -8,5 +8,5 @@ __all__ = [
     "UserLoginRequest",
     "ConversationRequest",
     "MessageRequest",
-    "Token"
+    "Token",
 ]

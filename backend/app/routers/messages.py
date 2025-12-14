@@ -23,7 +23,7 @@ async def create_message(
             conversation_id=request.conversation_id,
             user_id=request.user_id,
             type=request.type,
-            db=db
+            db=db,
         )
         await db.commit()
         return {"message": new_message}
@@ -31,5 +31,5 @@ async def create_message(
         await db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create message: {str(e)}"
+            detail=f"Failed to create message: {str(e)}",
         )
