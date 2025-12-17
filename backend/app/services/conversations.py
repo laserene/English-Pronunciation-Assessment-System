@@ -14,7 +14,7 @@ async def create_conversation_service(user_id: int, db: AsyncSession = Depends(g
     return new_conversation
 
 
-async def get_conversations_from_user_service(
+async def get_my_conversations_service(
     user_id: int, db: AsyncSession = Depends(get_db)
 ):
     conversations = await db.execute(

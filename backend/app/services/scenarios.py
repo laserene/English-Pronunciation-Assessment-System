@@ -6,13 +6,15 @@ from app.database import get_db
 from app.models import Scenario
 
 
-async def get_conversations_from_user_service(
+async def get_my_scenarios_general_info_service(
     user_id: int, db: AsyncSession = Depends(get_db)
 ):
     scenarios = await db.execute(
-        select(Scenario).where(
-            Scenario.user_id == user_id or Scenario.user_id.is_(None)
-        )
+        select(
+            Scenario.id,
+            Scenario.topic,
+            Scenario.img_path,
+        ).where(Scenario.user_id == user_id or Scenario.user_id.is_(None))
     )
     scenarios = scenarios.scalars().all()
     return scenarios

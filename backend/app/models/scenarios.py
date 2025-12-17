@@ -11,7 +11,7 @@ class Scenario(Base):
 
     topic = Column(String, nullable=False)
     vocabulary = Column(JSON, nullable=False)
-    level = Column(String, nullable=False)
+    level = Column(String, nullable=False, default="beginner")
     image_path = Column(String, nullable=True)
 
 
