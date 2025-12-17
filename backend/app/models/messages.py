@@ -1,6 +1,8 @@
-from sqlalchemy import Column, Integer, DateTime, ForeignKey, String
-from app.database import Base
 from datetime import datetime, timezone
+
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+
+from app.database import Base
 
 
 class Message(Base):

@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Float
-from database import Base
+
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
+
+from app.database import Base
 
 
 class PracticeSession(Base):

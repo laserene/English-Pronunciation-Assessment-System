@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
-from database import Base
+from sqlalchemy import Column, Float, ForeignKey, Integer, String
+
+from app.database import Base
 
 
 class IELTSTest(Base):

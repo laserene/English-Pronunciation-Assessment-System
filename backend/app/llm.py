@@ -1,9 +1,9 @@
 from litellm import (
-    completion,
-    acompletion,
+    APIError,
     AuthenticationError,
     RateLimitError,
-    APIError,
+    acompletion,
+    completion,
 )
 
 

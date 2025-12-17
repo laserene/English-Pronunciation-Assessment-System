@@ -1,8 +1,9 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from app.models import Message
+
 from app.database import get_db
+from app.models import Message
 
 
 async def create_message_service(

@@ -1,13 +1,18 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
-from database import Base
+from sqlalchemy import JSON, Column, Float, ForeignKey, Integer, String
+
+from app.database import Base
 
 
 class Scenario(Base):
     __tablename__ = "scenarios"
 
     id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+
     topic = Column(String, nullable=False)
+    vocabulary = Column(JSON, nullable=False)
     level = Column(String, nullable=False)
+    image_path = Column(String, nullable=True)
 
 
 class ScenarioScript(Base):

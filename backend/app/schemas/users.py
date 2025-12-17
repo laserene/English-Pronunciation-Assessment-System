@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
+
+from pydantic import BaseModel, EmailStr, Field
 
 
 class UserRequest(BaseModel):
@@ -9,6 +10,8 @@ class UserRequest(BaseModel):
     )
     email: EmailStr = Field(..., max_length=120, description="User email address")
     password: str = Field(..., min_length=6, description="Password (min 6 characters)")
+    first_name: str = Field(..., min_length=2, description="First name of the user")
+    last_name: str = Field(..., min_length=2, description="Last name of the user")
 
 
 class UserLoginRequest(BaseModel):

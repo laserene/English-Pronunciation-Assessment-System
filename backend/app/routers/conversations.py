@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Path, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
+
 from app.database import get_db
 from app.schemas import ConversationRequest
 from app.services.conversations import create_conversation_service
