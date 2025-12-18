@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "asyncpg>=0.31.0",
+    "litellm>=1.80.10",
     "ruff>=0.14.9",
 ]
 

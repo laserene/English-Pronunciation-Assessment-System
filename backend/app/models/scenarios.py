@@ -15,7 +15,7 @@ class Scenario(Base):
     image_path = Column(String, nullable=True)
 
 
-class ScenarioScript(Base):
+class ScenarioScriptVersion(Base):
     __tablename__ = "scenario_scripts"
 
     id = Column(Integer, primary_key=True)
