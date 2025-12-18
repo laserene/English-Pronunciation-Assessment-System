@@ -1,6 +1,6 @@
 import { JSX } from "react";
 import { useNavigate } from "react-router-dom";
-import CarouselPanel from "./carousel_panel.tsx";
+import CarouselPanel from "./CarouselPanel.tsx";
 import IELTSSpeakingImage from "../../assets/images/4-li-do-khien-ban-mai-khong-tang-duoc-diem-speaking-ielts.jpg";
 import FreeConversationImage from "../../assets/images/pexels-photo-6697000.jpeg";
 import PlaceholderImage from "../../assets/images/9a06011eb18bc859474dd22d003cd57c.jpg"
@@ -8,13 +8,13 @@ import "./index.css";
 
 export default function OpenConversationPanel(): JSX.Element {
     const items = [
-        { id: 1, topic: "IELTS Speaking Simulation", background_url: IELTSSpeakingImage },
-        { id: 2, topic: "Free Conversation", background_url: FreeConversationImage },
+        { id: 1, topic: "IELTS Speaking Simulation", path: "ielts", background_url: IELTSSpeakingImage },
+        { id: 2, topic: "Free Conversation", path: "custom", background_url: FreeConversationImage },
     ]
 
     const navigate = useNavigate();
-    const handleClick = (topic: string) => {
-        navigate("/open_conversation", { state: { topic } });
+    const handleClick = (path: string) => {
+        navigate(`/${path}`);
     };
 
     return (
@@ -29,7 +29,7 @@ export default function OpenConversationPanel(): JSX.Element {
                             backgroundSize: "cover",
                             backgroundPosition: "center",
                         }}
-                        onClick={() => handleClick(item.topic)}
+                        onClick={() => handleClick(item.path)}
                     >
                         {item.topic}
                     </div>

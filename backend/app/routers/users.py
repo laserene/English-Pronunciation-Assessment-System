@@ -5,7 +5,7 @@ from starlette import status
 from app.auth.oauth2 import get_current_user
 from app.database import get_db
 from app.services.conversations import get_my_conversations_service
-from app.services.scenarios import get_my_scenarios_general_info_service
+from app.services.scenarios import get_my_scenarios_service
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -53,7 +53,7 @@ async def get_my_conversations(
 
 
 @router.get("/me/scenarios", status_code=status.HTTP_200_OK)
-async def get_my_scenarios_general_info(
+async def get_my_scenarios(
     current_user=Depends(get_current_user), db: AsyncSession = Depends(get_db)
 ):
     """
@@ -61,7 +61,7 @@ async def get_my_scenarios_general_info(
     Now secure - users can only access their own scenarios.
     """
     try:
-        scenarios = await get_my_scenarios_general_info_service(
+        scenarios = await get_my_scenarios_service(
             user_id=current_user.id,  # Use authenticated user's ID
             db=db,
         )

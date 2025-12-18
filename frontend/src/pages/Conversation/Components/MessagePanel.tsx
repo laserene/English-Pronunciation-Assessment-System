@@ -1,11 +1,10 @@
-import { JSX, useState, useEffect, useRef } from "react";
-import axios from "axios";
+import { JSX, useState, useRef } from "react";
 import "./index.css";
 
-export default function MessagePanel({ children }: { children?: React.ReactNode }): JSX.Element {
+export default function MessagePanel({ height, children }: { height: number, children?: React.ReactNode }): JSX.Element {
   const [messages, setMessages] = useState([]);
 
-  const expandedHeight = "320px";
+  const expandedHeight = `${height}px`;
   const messageContainer = useRef<HTMLDivElement>(null);
 
   // useEffect(() => {

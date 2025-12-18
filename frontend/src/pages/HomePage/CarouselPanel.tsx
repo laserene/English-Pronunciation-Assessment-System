@@ -12,6 +12,7 @@ export default function CarouselPanel({
   const scrollRef = useRef(null);
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
+  const [isOverflowX, setIsOverflowX] = useState(false);
 
   // Set starting and ending point value
   const checkScroll = () => {
@@ -19,6 +20,7 @@ export default function CarouselPanel({
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
       setIsAtStart(scrollLeft < 10);
       setIsAtEnd(scrollLeft >= scrollWidth - clientWidth - 10);
+      setIsOverflowX(scrollWidth > clientWidth);
     }
   };
 
@@ -40,10 +42,21 @@ export default function CarouselPanel({
   };
 
   // Check if carousel is overflow, then change left-scroll-button visibility
-  const [isOverflowX, setIsOverflowX] = useState(false);
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
+
+    checkScroll();
+
+    const observer = new ResizeObserver(() => {
+      checkScroll();
+    });
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+    };
 
     setIsOverflowX(el.scrollWidth > el.clientWidth);
   }, []);

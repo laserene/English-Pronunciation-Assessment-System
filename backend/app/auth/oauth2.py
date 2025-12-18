@@ -42,6 +42,7 @@ async def get_current_user(
         )
 
     # Fetch user from database
+    user_id = int(user_id)
     user = await get_user_by_id_service(user_id, db)
     if user is None:
         raise HTTPException(

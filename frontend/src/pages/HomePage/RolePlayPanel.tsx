@@ -1,6 +1,6 @@
 import { JSX } from "react";
 import { useNavigate } from "react-router-dom";
-import CarouselPanel from "./carousel_panel.tsx";
+import CarouselPanel from "./CarouselPanel.tsx";
 import FrierenImage from "../../assets/images/1344002.jpeg"
 import PlaceholerImage from "../../assets/images/17a5f1b042267ce046b552527c248b94.jpg"
 import "./index.css";

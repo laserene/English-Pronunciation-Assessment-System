@@ -1,9 +1,9 @@
 import { JSX } from "react";
 import Header from "./header.tsx";
 import Banner from "./banner.tsx";
-import ScenarioPanel from "./scenario_panel.tsx";
-import OpenConversationPanel from "./open_conversation_panel.tsx";
-import RolePlayPanel from "./role_play_panel.tsx"
+import ScenariosPanel from "./ScenariosPanel.tsx";
+import OpenConversationPanel from "./OpenConversationPanel.tsx";
+import RolePlayPanel from "./RolePlayPanel.tsx"
 import "./index.css";
 
 export default function HomePage(): JSX.Element {
@@ -12,7 +12,7 @@ export default function HomePage(): JSX.Element {
       <Header />
       <Banner />
       <OpenConversationPanel />
-      <ScenarioPanel />
+      <ScenariosPanel />
       <RolePlayPanel />
     </div >
   );
