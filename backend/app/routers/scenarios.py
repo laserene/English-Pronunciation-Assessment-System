@@ -4,7 +4,7 @@ from starlette import status
 
 from app.auth.oauth2 import get_current_user
 from app.database import get_db
-from app.schemas import ScenarioRequest
+from app.schemas.scenarios import ScenarioRequest
 from app.services.scenarios import create_scenario_scripts_service
 
 router = APIRouter(prefix="/scenarios", tags=["scenarios"])

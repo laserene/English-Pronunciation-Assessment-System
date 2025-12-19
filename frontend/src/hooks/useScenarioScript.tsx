@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axios";
 
 interface ScriptTurn {
   turn_index: number;
@@ -7,18 +7,18 @@ interface ScriptTurn {
   expected_text: string;
 }
 
-export function useScenarioScript(scenarioId: string) {
+export function useScenarioScript(scenario_id: string) {
   const [script, setScript] = useState<ScriptTurn[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!scenarioId) return;
+    if (!scenario_id) return;
 
     setLoading(true);
     setError(null);
 
-    axios.get(`http://localhost:8000/scenarios/${scenarioId}/script/`)
+    axiosInstance.post(`/scenarios/${scenario_id}/script/`)
       .then((res) => {
         setScript(res.data);
       })
@@ -30,7 +30,7 @@ export function useScenarioScript(scenarioId: string) {
       .finally(() => {
         setLoading(false);
       });
-  }, [scenarioId]);
+  }, [scenario_id]);
 
   return { script, loading, error };
 }

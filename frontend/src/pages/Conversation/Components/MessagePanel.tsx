@@ -1,31 +1,24 @@
-import { JSX, useState, useRef } from "react";
+import { JSX, useState, useRef, useEffect } from "react";
 import "./index.css";
 
-export default function MessagePanel({ height, children }: { height: number, children?: React.ReactNode }): JSX.Element {
-  const [messages, setMessages] = useState([]);
+interface ScriptTurn {
+  turn_index: number;
+  speaker: "AI" | "USER";
+  expected_text: string;
+}
 
+export default function MessagePanel(
+  { height, script, children }:
+    { height: number, script: ScriptTurn[], children?: React.ReactNode }
+): JSX.Element {
+
+  const [messages, setMessages] = useState([]);
   const expandedHeight = `${height}px`;
   const messageContainer = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   async function fetchMessages() {
-  //     try {
-  //       const response = await axios.get("http://127.0.0.1:8000/conversations/1/messages");
-  //       setMessages(response.data.messages);
-  //     } catch (error) {
-  //       console.error("Error fetching messages:", error);
-  //     }
-  //   }
-
-  //   fetchMessages();
-
-  //   setTimeout(() => {
-  //     if (messageContainer.current) {
-  //       messageContainer.current.scrollTop =
-  //         messageContainer.current.scrollHeight;
-  //     }
-  //   }, 0.001);
-  // }, []);
+  useEffect(() => {
+    setMessages(script);
+  }, [script]);
 
   return (
     <div className="interaction-block">

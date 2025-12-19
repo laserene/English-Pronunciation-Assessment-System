@@ -3,9 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.auth import auth_routers
 from app.database import Base, engine
 from app.routers import (
+    auth_routers,
     scenario_routers,
     user_routers,
 )

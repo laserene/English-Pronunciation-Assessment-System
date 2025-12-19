@@ -1,10 +1,13 @@
 import { JSX, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axios.ts";
+import { authStore } from "../../utils/authStore.ts";
+import useAuth from "../../hooks/useAuth.tsx";
 import "./index.css";
 
 export default function Login(): JSX.Element {
   const navigate = useNavigate();
+  const { setAuthenticated } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,12 +29,11 @@ export default function Login(): JSX.Element {
         password,
       });
 
-      const accessToken = res.data.access_token
-      const refreshToken = res.data.refresh_token
+      const accessToken = res.data.access_token;
+      authStore.setToken(accessToken);
 
-      // Save token
-      localStorage.setItem("access_token", accessToken);
-      localStorage.setItem("refresh_token", refreshToken);
+      // Update auth context
+      setAuthenticated(true);
 
       // Redirect after login
       navigate("/");

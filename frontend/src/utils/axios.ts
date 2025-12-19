@@ -1,4 +1,5 @@
 import axios from "axios";
+import { authStore } from "./authStore";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8000/",
@@ -8,17 +9,12 @@ const axiosInstance = axios.create({
   withCredentials: true, // optional (for cookies / refresh token)
 });
 
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("access_token");
-
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+axiosInstance.interceptors.request.use((config) => {
+  const token = authStore.getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default axiosInstance;

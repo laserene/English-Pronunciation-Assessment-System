@@ -24,17 +24,3 @@ class ScenarioScriptVersion(Base):
     turn_index = Column(Integer, nullable=False)
     speaker = Column(String, nullable=False)  # AI | USER
     expected_text = Column(String, nullable=False)
-
-
-class ScenarioPerformance(Base):
-    __tablename__ = "scenario_performances"
-
-    id = Column(Integer, primary_key=True)
-    session_id = Column(Integer, ForeignKey("practice_sessions.id"), nullable=False)
-
-    turn_index = Column(Integer, nullable=False)
-    audio_path = Column(String, nullable=False)
-    recognized_text = Column(String)
-
-    pronunciation_score = Column(Float)
-    vocabulary_score = Column(Float)

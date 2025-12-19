@@ -1,6 +1,5 @@
 import { Navigate, BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { createRoot } from "react-dom/client";
-import ProtectedRoute from "./pages/Auth/ProtectedRoute.tsx";
 import HomePage from "./pages/HomePage/index.tsx";
 import AuthPage from "./pages/Auth/index.tsx";
 import Login from "./pages/Auth/Login.tsx";
@@ -15,11 +14,9 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/login" element={<AuthPage content={<Login />} />} />
         <Route path="/register" element={<AuthPage content={<SignUp />} />} />
 
-        <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/home" element={<Navigate to="/" replace />} />
-          <Route path="/scenario/:scenario_id" element={<LearnByScenarios />} />
-        </Route>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<Navigate to="/" replace />} />
+        <Route path="/scenario/:scenario_id" element={<LearnByScenarios />} />
       </Routes>
     </Router >
   </>

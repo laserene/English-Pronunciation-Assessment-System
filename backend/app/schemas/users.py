@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel, EmailStr, Field
 
 
-class UserRequest(BaseModel):
+class UserRegisterRequest(BaseModel):
     id: Optional[int] = Field(None, description="User ID, optional for new users")
     username: str = Field(
         ..., min_length=3, max_length=20, description="Username of the user"
