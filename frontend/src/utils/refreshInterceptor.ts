@@ -1,5 +1,4 @@
 import axiosInstance from "./axios.ts";
-import { authStore } from "./authStore.ts";
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -38,13 +37,13 @@ axiosInstance.interceptors.response.use(
         const res = await axiosInstance.post("/auth/refresh");
         const newAccessToken = res.data.access_token;
 
-        authStore.setToken(newAccessToken);
+        localStorage.setItem("access_token", newAccessToken);
         processQueue(null, newAccessToken);
 
         return axiosInstance(originalRequest);
     } catch (err) {
         processQueue(err, null);
-        authStore.clearToken();
+        localStorage.removeItem("access_token");
         window.location.href = "auth/login";
         return Promise.reject(err);
     } finally {
