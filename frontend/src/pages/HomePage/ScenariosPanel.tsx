@@ -7,21 +7,21 @@ import "./index.css";
 
 interface Scenario {
   id: number;
-  topic: string;
+  scenario_name: string;
   image_path?: string | null;
 }
 
 export default function ScenariosPanel(): JSX.Element {
   const navigate = useNavigate();
   const handleClick = (scenario_id: number) => {
-    navigate(`/scenario/${scenario_id}`);
+    navigate(`me/scenario/${scenario_id}/versions`);
   };
 
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
 
   useEffect(() => {
     const fetchScenarios = async () => {
-      const res = await axiosInstance.get("users/me/scenarios");
+      const res = await axiosInstance.get("/me/scenarios");
       setScenarios(res.data);
     };
 
@@ -43,7 +43,7 @@ export default function ScenariosPanel(): JSX.Element {
             }}
             onClick={() => handleClick(scenario.id)}
           >
-            {scenario.topic}
+            {scenario.scenario_name}
           </div>
         ))}
         <div className="space-item"></div>

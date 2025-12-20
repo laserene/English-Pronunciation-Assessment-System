@@ -6,7 +6,7 @@ from app.auth.oauth2 import get_current_user
 from app.database import get_db
 from app.services.scenarios import get_my_scenarios_service
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/me", tags=["users"])
 
 
 @router.get("/protected", status_code=status.HTTP_200_OK)
@@ -17,7 +17,7 @@ async def protected_route(current_user=Depends(get_current_user)):
     return {"current_user": current_user}
 
 
-@router.get("/me", status_code=status.HTTP_200_OK)
+@router.get("/", status_code=status.HTTP_200_OK)
 async def get_current_user_info(current_user=Depends(get_current_user)):
     """
     Get the authenticated user's information.
@@ -30,7 +30,7 @@ async def get_current_user_info(current_user=Depends(get_current_user)):
     }
 
 
-@router.get("/me/scenarios", status_code=status.HTTP_200_OK)
+@router.get("/scenarios", status_code=status.HTTP_200_OK)
 async def get_my_scenarios(
     current_user=Depends(get_current_user), db: AsyncSession = Depends(get_db)
 ):

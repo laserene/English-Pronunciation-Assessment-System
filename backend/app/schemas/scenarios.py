@@ -10,7 +10,7 @@ class ScenarioRequest(BaseModel):
     user_id: int = Field(
         ..., description="The ID of the user who owns the conversation"
     )
-    topic: str = Field(..., description="The topic of the conversation scenario")
+    scenario_name: str = Field(..., description="The name of the conversation scenario")
     vocabulary: list[str] = Field(
         ..., description="A list of vocabulary words relevant to the scenario"
     )

@@ -1,19 +1,15 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer
 
 from app.database import Base
 
 
-class Scenario(Base):
-    __tablename__ = "scenarios"
+class ScriptVersion(Base):
+    __tablename__ = "script_versions"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-
-    scenario_name = Column(String, nullable=False)
-    vocabulary = Column(JSON, nullable=False)
-    image_path = Column(String, nullable=True)
+    scenario_id = Column(Integer, ForeignKey("scenarios.id"), nullable=False)
 
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
