@@ -1,7 +1,7 @@
 import { JSX, useState } from "react";
 import "./index.css";
 
-export default function SuggestionPanel(): JSX.Element {
+export default function SuggestionPanel({ title, elements }: { title: string, elements: string[] }): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
@@ -10,7 +10,7 @@ export default function SuggestionPanel(): JSX.Element {
   return (
     <div className="interaction-block">
       <div className="interaction-block-title-wrapper">
-        <div>Suggestions</div>
+        <div>{title}</div>
         <button className="conversation-btn toggle-btn" onClick={toggleExpanded}>
           {isExpanded ? "Collapse ▲" : "Expand ▼"}
         </button>
@@ -21,7 +21,11 @@ export default function SuggestionPanel(): JSX.Element {
         style={{ "--expanded-height": expandedHeight } as React.CSSProperties}
       >
         <div className="interaction-block-content-inner">
-          These are recommended words.
+          {elements.map((element, index) => (
+            <div key={index} className="suggestion-item">
+              {element}
+            </div>
+          ))}
         </div>
       </div>
     </div>

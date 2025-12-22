@@ -1,10 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, Depends
 from starlette import status
 
 from app.auth.oauth2 import get_current_user
-from app.database import get_db
-from app.services.scenarios import get_my_scenarios_service
 
 router = APIRouter(prefix="/me", tags=["users"])
 
@@ -28,24 +25,3 @@ async def get_current_user_info(current_user=Depends(get_current_user)):
         "email": current_user.email,
         # Add other fields you want to expose
     }
-
-
-@router.get("/scenarios", status_code=status.HTTP_200_OK)
-async def get_my_scenarios(
-    current_user=Depends(get_current_user), db: AsyncSession = Depends(get_db)
-):
-    """
-    Get scenarios for the authenticated user.
-    Now secure - users can only access their own scenarios.
-    """
-    try:
-        scenarios = await get_my_scenarios_service(
-            user_id=current_user.id,  # Use authenticated user's ID
-            db=db,
-        )
-        return scenarios
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to retrieve scenarios: {str(e)}",
-        )

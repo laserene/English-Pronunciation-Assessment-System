@@ -27,6 +27,7 @@ async def register_service(
     )
     db.add(new_user)  # Add new user to the session
     await db.flush()  # Send the insert to the database
+    await db.commit()  # Commit the transaction
     await db.refresh(new_user)  # Refresh to get the new user's data (like ID)
     return new_user
 

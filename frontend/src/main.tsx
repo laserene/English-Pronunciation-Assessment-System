@@ -22,8 +22,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
 
-          <Route path="/me/collection/scenario_versions" element={<Navigate to="/" replace />} />
-          <Route path="/scenario/:scenario_id" element={<LearnByScenarios />} />
+          <Route path="/scenario/:scenario_id/" element={<LearnByScenarios />} />
         </Route>
       </Routes>
     </Router >

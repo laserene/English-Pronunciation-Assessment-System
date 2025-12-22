@@ -1,24 +1,27 @@
-import { JSX, useState, useRef, useEffect } from "react";
+import { JSX, useRef } from "react";
 import "./index.css";
 
-interface ScriptTurn {
+interface ScriptLine {
+  speaker: "user" | "ai";
   turn_index: number;
-  speaker: "AI" | "USER";
   expected_text: string;
 }
 
 export default function MessagePanel(
-  { height, script, children }:
-    { height: number, script: ScriptTurn[], children?: React.ReactNode }
+  { height, scripts = [], children }:
+    { height: number, scripts?: ScriptLine[], children?: React.ReactNode }
 ): JSX.Element {
 
-  const [messages, setMessages] = useState([]);
   const expandedHeight = `${height}px`;
   const messageContainer = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setMessages(script);
-  }, [script]);
+  const playSample = (text: string) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    speechSynthesis.speak(utterance);
+  };
 
   return (
     <div className="interaction-block">
@@ -34,13 +37,13 @@ export default function MessagePanel(
           className="interaction-block-content-inner"
           ref={messageContainer}
         >
-          {messages.map((msg, index: number) => (
+          {scripts.map((script, index: number) => (
             <div
               key={index}
-              className={`message-item ${msg.user_id === null ? "receiver" : "sender"
+              className={`message-item ${script.speaker === "ai" ? "ai-message" : "user-message"
                 }`}
             >
-              {msg.text}
+              {script.expected_text}
             </div>
           ))}
         </div>

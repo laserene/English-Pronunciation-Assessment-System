@@ -30,7 +30,6 @@ async def register(request: UserRegisterRequest, db: AsyncSession = Depends(get_
             last_name=request.last_name,
             db=db,
         )
-        await db.commit()
         return {"message": "User registered successfully."}
     except Exception as e:
         await db.rollback()
@@ -81,12 +80,13 @@ async def refresh_access_token(
         raise HTTPException(status_code=401)
 
     user_id = payload.get("sub")
+    user_id = int(user_id)
     user = await get_user_by_id_service(user_id, db)
     if not user:
         raise HTTPException(status_code=401)
 
-    new_access_token = create_token(..., token_type="access")
-    new_refresh_token = create_token(..., token_type="refresh")
+    new_access_token = create_token({"sub": str(user.id)}, token_type="access")
+    new_refresh_token = create_token({"sub": str(user.id)}, token_type="refresh")
 
     response.set_cookie(
         key="refresh_token",

@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 export default function CarouselPanel({
   title,
   children,
-  scrollAmount = 280
+  scrollAmount = 340
 }: {
   title: string;
   children?: React.ReactNode;
@@ -48,18 +48,16 @@ export default function CarouselPanel({
 
     checkScroll();
 
-    const observer = new ResizeObserver(() => {
-      checkScroll();
-    });
+    el.addEventListener("scroll", checkScroll);
 
+    const observer = new ResizeObserver(checkScroll);
     observer.observe(el);
 
     return () => {
+      el.removeEventListener("scroll", checkScroll);
       observer.disconnect();
     };
-
-    setIsOverflowX(el.scrollWidth > el.clientWidth);
-  }, []);
+  }, [children]);
 
   return (
     <div style={{ marginBottom: "64px" }}>

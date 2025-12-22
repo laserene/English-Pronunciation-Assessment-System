@@ -61,7 +61,7 @@ export default function InputModePanel({
       const barWidth = 2;
       const spacing = 4;
 
-      ctx.fillStyle = "rgba(151, 229, 255, 1)"; // Blue color
+      ctx.fillStyle = "rgba(254, 80, 0, 1)";
 
       for (let i = 0; i < dataArray.length; i++) {
         const normalized = dataArray[i] / 255;
@@ -103,8 +103,13 @@ export default function InputModePanel({
         id="input-mode-container"
         className="interaction-block-content-inner"
       >
-        {(inputMode === "voice" || inputMode === null) && (
+        {inputMode === "voice" && (
           <MicVisualizer canvasRef={canvasRef} />
+        )}
+        {inputMode === null && (
+          <div id="input-mode-placeholder">
+            Speak someting to start...
+          </div>
         )}
         {inputMode === "typing" && <ChatInput />}
         <div className="mode-btn-container">

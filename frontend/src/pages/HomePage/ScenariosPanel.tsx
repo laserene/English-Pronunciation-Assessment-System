@@ -8,20 +8,21 @@ import "./index.css";
 interface Scenario {
   id: number;
   scenario_name: string;
+  level: string;
   image_path?: string | null;
 }
 
 export default function ScenariosPanel(): JSX.Element {
   const navigate = useNavigate();
-  const handleClick = (scenario_id: number) => {
-    navigate(`me/scenario/${scenario_id}/versions`);
+  const practiceScenario = (scenario_id: number) => {
+    navigate(`scenario/${scenario_id}`);
   };
 
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
 
   useEffect(() => {
     const fetchScenarios = async () => {
-      const res = await axiosInstance.get("/me/scenarios");
+      const res = await axiosInstance.get("/scenarios");
       setScenarios(res.data);
     };
 
@@ -41,11 +42,24 @@ export default function ScenariosPanel(): JSX.Element {
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-            onClick={() => handleClick(scenario.id)}
+            onClick={() => practiceScenario(scenario.id)}
           >
             {scenario.scenario_name}
           </div>
         ))}
+        <div
+          className="carousel-item"
+          style={{
+            backgroundImage: `url(${PlaceholderImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          onClick={() => { navigate("/"); }}
+        >
+          <div className="carousel-item-title">
+            Create your own scenario!
+          </div>
+        </div>
         <div className="space-item"></div>
       </CarouselPanel>
     </div>
