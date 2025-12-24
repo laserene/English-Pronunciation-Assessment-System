@@ -24,10 +24,26 @@ export default function InputModePanel({
   const analyserRef = useRef(null);
   const animationRef = useRef(null);
 
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     streamRef.current = stream;
 
+    // Audio Recorder
+    const mediaRecorder = new MediaRecorder(stream);
+    mediaRecorderRef.current = mediaRecorder;
+    audioChunksRef.current = [];
+    mediaRecorder.start();
+
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        audioChunksRef.current.push(event.data);
+      }
+    };
+
+    // Audio Visualizer
     const audioContext = new AudioContext();
     audioContextRef.current = audioContext;
 
@@ -81,6 +97,10 @@ export default function InputModePanel({
   };
 
   const stopRecording = () => {
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
+    }
+
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track: any) => track.stop());
       streamRef.current = null;
@@ -92,6 +112,31 @@ export default function InputModePanel({
     if (audioContextRef.current) {
       audioContextRef.current.close();
     }
+
+    const audioBlob = new Blob(audioChunksRef.current, {
+      type: "audio/webm",
+    });
+
+    sendAudioToBackend(audioBlob);
+  };
+
+  const sendAudioToBackend = async (audioBlob: Blob) => {
+    const formData = new FormData();
+
+    formData.append("audio", audioBlob, "speech.webm");
+    formData.append("scenario_id", "1");       // example
+    formData.append("turn_index", "3");        // example
+    formData.append("mode", "scenario");       // scenario | free | ielts
+
+    const response = await fetch("/api/speech/submit", {
+      method: "POST",
+      body: formData,
+    });
+
+    console.log("STT result:");
+
+    const result = await response.json();
+
   };
 
   return (
@@ -108,7 +153,7 @@ export default function InputModePanel({
         )}
         {inputMode === null && (
           <div id="input-mode-placeholder">
-            Speak someting to start...
+            Let's start...
           </div>
         )}
         {inputMode === "typing" && <ChatInput />}

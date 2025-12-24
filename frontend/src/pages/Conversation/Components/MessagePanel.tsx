@@ -1,4 +1,4 @@
-import { JSX, useRef } from "react";
+import { JSX } from "react";
 import "./index.css";
 
 interface ScriptLine {
@@ -13,7 +13,6 @@ export default function MessagePanel(
 ): JSX.Element {
 
   const expandedHeight = `${height}px`;
-  const messageContainer = useRef<HTMLDivElement>(null);
 
   const playSample = (text: string) => {
     const utterance = new SpeechSynthesisUtterance(text);
@@ -35,20 +34,27 @@ export default function MessagePanel(
         <div
           id="message-history-container"
           className="interaction-block-content-inner"
-          ref={messageContainer}
         >
           {scripts.map((script, index: number) => (
-            <div
-              key={index}
-              className={`message-item ${script.speaker === "ai" ? "ai-message" : "user-message"
-                }`}
-            >
-              {script.expected_text}
+            <div className={`message-item-wrapper ${script.speaker === "ai" ? "ai-message" : "user-message"}`}>
+              {script.speaker === "user" && (
+                <button
+                  className="play-sample-button"
+                  onClick={() => playSample(script.expected_text)}
+                >🔊</button>
+              )}
+
+              <div
+                key={index}
+                className="message-item"
+              >
+                {script.expected_text}
+              </div>
             </div>
           ))}
         </div>
       </div>
       {children}
-    </div>
+    </div >
   );
 }

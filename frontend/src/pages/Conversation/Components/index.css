@@ -160,7 +160,28 @@
 }
 
 .message-item-wrapper {
-  width: 100%;
+  width: 70%;
+  display: flex;
+  gap: 8px;
+}
+
+.play-sample-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  align-self: center;
+  border: none;
+  box-sizing: border-box;
+
+  flex-shrink: 0; /* prevent shrinking in flex */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.play-sample-button:hover {
+  background-color: #ffb28e;
 }
 
 .message-item {
@@ -169,7 +190,7 @@
   padding-right: 12px;
   border-radius: 16px;
   background-color: #ffe5cd;
-  max-width: 70%;
+  max-width: 100%;
   overflow-wrap: break-word;
   font-size: 14px;
 }
