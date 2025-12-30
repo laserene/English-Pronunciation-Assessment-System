@@ -8,8 +8,8 @@ interface ScriptLine {
 }
 
 export default function MessagePanel(
-  { height, scripts = [], children }:
-    { height: number, scripts?: ScriptLine[], children?: React.ReactNode }
+  { title, height, scripts = [], children }:
+    { title: string, height: number, scripts?: ScriptLine[], children?: React.ReactNode }
 ): JSX.Element {
 
   const expandedHeight = `${height}px`;
@@ -25,7 +25,7 @@ export default function MessagePanel(
   return (
     <div className="interaction-block">
       <div className="interaction-block-title-wrapper">
-        <div>Dialogue Script</div>
+        <div>{title}</div>
       </div>
       <div
         className="interaction-block-content expanded"
@@ -36,7 +36,14 @@ export default function MessagePanel(
           className="interaction-block-content-inner"
         >
           {scripts.map((script, index: number) => (
-            <div className={`message-item-wrapper ${script.speaker === "ai" ? "ai-message" : "user-message"}`}>
+            <div key={index} className={`message-item-wrapper ${script.speaker === "ai" ? "ai-message" : "user-message"}`}>
+              {script.speaker === "user" && (
+                <button
+                  className="play-sample-button"
+                  onClick={() => playSample(script.expected_text)}
+                >🔎</button>
+              )}
+
               {script.speaker === "user" && (
                 <button
                   className="play-sample-button"
@@ -45,11 +52,17 @@ export default function MessagePanel(
               )}
 
               <div
-                key={index}
                 className="message-item"
               >
                 {script.expected_text}
               </div>
+
+              {script.speaker === "ai" && (
+                <button
+                  className="play-sample-button"
+                  onClick={() => playSample(script.expected_text)}
+                >🔊</button>
+              )}
             </div>
           ))}
         </div>

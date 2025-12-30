@@ -1,7 +1,9 @@
 import { JSX, useRef, useState } from "react";
 import MicVisualizer from "./MicVisualizer.tsx";
 import ChatInput from "./ChatInput.tsx";
+import { useScenario } from "../../../contexts/ScenarioContext.tsx";
 import "./index.css";
+import axiosInstance from "../../../utils/axios.ts";
 
 interface InputModePanelProps {
   showVoiceButton?: boolean;
@@ -27,6 +29,7 @@ export default function InputModePanel({
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
 
+  // Start recording
   const startRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     streamRef.current = stream;
@@ -38,9 +41,17 @@ export default function InputModePanel({
     mediaRecorder.start();
 
     mediaRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
+      if (event.data && event.data.size > 0) {
         audioChunksRef.current.push(event.data);
       }
+    };
+
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunksRef.current, {
+        type: mediaRecorder.mimeType,
+      });
+
+      sendAudioToBackend(audioBlob);
     };
 
     // Audio Visualizer
@@ -67,9 +78,14 @@ export default function InputModePanel({
       analyser.getByteFrequencyData(dataArray);
 
       const canvas = canvasRef.current;
+      if (!canvas) return;
+
       const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
       const width = canvas.width;
       const height = canvas.height;
+
 
       ctx.fillStyle = "rgba(255, 255, 255, 1)";
       ctx.fillRect(0, 0, width, height);
@@ -97,7 +113,7 @@ export default function InputModePanel({
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current) {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
       mediaRecorderRef.current.stop();
     }
 
@@ -109,34 +125,33 @@ export default function InputModePanel({
     if (animationRef.current) {
       cancelAnimationFrame(animationRef.current);
     }
+
     if (audioContextRef.current) {
       audioContextRef.current.close();
     }
-
-    const audioBlob = new Blob(audioChunksRef.current, {
-      type: "audio/webm",
-    });
-
-    sendAudioToBackend(audioBlob);
   };
 
+  const { scenario_id, currentTurn, setCurrentTurn } = useScenario()
   const sendAudioToBackend = async (audioBlob: Blob) => {
     const formData = new FormData();
 
     formData.append("audio", audioBlob, "speech.webm");
-    formData.append("scenario_id", "1");       // example
-    formData.append("turn_index", "3");        // example
-    formData.append("mode", "scenario");       // scenario | free | ielts
+    formData.append("scenario_id", scenario_id.toString());
+    formData.append("turn_index", currentTurn.toString());
 
-    const response = await fetch("/api/speech/submit", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await axiosInstance.post(
+      "/scenarios/speech/submit",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
 
-    console.log("STT result:");
-
-    const result = await response.json();
-
+    const result = await response;
+    setCurrentTurn(currentTurn + 1);
+    console.log(result.data)
   };
 
   return (

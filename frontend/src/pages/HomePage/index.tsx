@@ -2,7 +2,6 @@ import { JSX } from "react";
 import Header from "./header.tsx";
 import Banner from "./banner.tsx";
 import ScenariosPanel from "./ScenariosPanel.tsx";
-import OpenConversationPanel from "./OpenConversationPanel.tsx";
 import RolePlayPanel from "./RolePlayPanel.tsx"
 import "./index.css";
 
@@ -11,7 +10,7 @@ export default function HomePage(): JSX.Element {
     <div id="homepage">
       <Header />
       <Banner />
-      <OpenConversationPanel />
+      {/* <OpenConversationPanel /> */}
       <ScenariosPanel />
       <RolePlayPanel />
     </div >

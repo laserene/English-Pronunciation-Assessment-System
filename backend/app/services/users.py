@@ -1,8 +1,6 @@
-from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.database import get_db
 from app.models import User
 from app.services.auth import get_password_hash
 
@@ -13,7 +11,7 @@ async def register_service(
     password: str,
     first_name: str,
     last_name: str,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession,
 ):
     """
     Register a new user with the provided email and password.
@@ -32,7 +30,7 @@ async def register_service(
     return new_user
 
 
-async def get_user_by_email_service(email: str, db: AsyncSession = Depends(get_db)):
+async def get_user_by_email_service(email: str, db: AsyncSession):
     """
     Retrieve a user by their email.
     """
@@ -41,7 +39,7 @@ async def get_user_by_email_service(email: str, db: AsyncSession = Depends(get_d
     return user
 
 
-async def get_user_by_id_service(user_id: int, db: AsyncSession = Depends(get_db)):
+async def get_user_by_id_service(user_id: int, db: AsyncSession):
     """
     Retrieve a user by their ID.
     """

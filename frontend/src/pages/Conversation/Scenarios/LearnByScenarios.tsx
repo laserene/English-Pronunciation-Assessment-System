@@ -6,6 +6,7 @@ import InteractionPanel from "../Components/InteractionPanel.tsx";
 import SuggestionPanel from "../Components/SuggestionPanel.tsx";
 import MessagePanel from "../Components/MessagePanel.tsx";
 import InputModePanel from "../Components/InputModePanel.tsx";
+import { ScenarioProvider } from "../../../contexts/ScenarioContext.tsx";
 import axiosInstance from "../../../utils/axios.ts";
 import "./index.css";
 
@@ -21,12 +22,17 @@ export default function LearnByScenarios(): JSX.Element {
     const [vocabulary, setVocabulary] = useState<string[]>([]);
     const [currentTurn, setCurrentTurn] = useState(1);
 
+    let scenarioId = Number(scenario_id);
+    if (Number.isNaN(scenarioId)) {
+        // handle invalid or missing param
+        scenarioId = 0;
+    }
     useEffect(() => {
         const fetchScenario = async () => {
-            if (!scenario_id) return;
+            if (!scenarioId) return;
 
             const res = await axiosInstance.get(
-                `/scenarios/${scenario_id}/scripts`
+                `/scenarios/${scenarioId}/scripts`
             );
 
             setScriptLines(res.data.script_lines);
@@ -34,20 +40,24 @@ export default function LearnByScenarios(): JSX.Element {
         };
 
         fetchScenario();
-    }, [scenario_id]);
+    }, [scenarioId]);
 
     return (
-        <>
-            <Header></Header>
+        <ScenarioProvider
+            scenario_id={scenarioId}
+            currentTurn={currentTurn}
+            setCurrentTurn={setCurrentTurn}
+        >
+            <Header />
             <div className="flex-layout">
                 <Live2DPanel />
                 <InteractionPanel>
                     <SuggestionPanel title="Vocabulary" elements={vocabulary} />
-                    <MessagePanel height={312} scripts={scriptLines.slice(0, currentTurn)}>
+                    <MessagePanel title="Dialogue Script" height={312} scripts={scriptLines.slice(0, currentTurn)}>
                         <InputModePanel showVoiceButton={true} showTypingButton={false} />
                     </MessagePanel>
                 </InteractionPanel>
             </div>
-        </>
+        </ScenarioProvider>
     );
 }
