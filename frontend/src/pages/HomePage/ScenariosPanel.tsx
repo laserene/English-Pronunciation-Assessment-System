@@ -6,62 +6,62 @@ import PlaceholderImage from "../../assets/images/9a06011eb18bc859474dd22d003cd5
 import "./index.css";
 
 interface Scenario {
-  id: number;
-  scenario_name: string;
-  level: string;
-  image_path?: string | null;
+	id: number;
+	scenario_name: string;
+	level: string;
+	image_path?: string | null;
 }
 
-export default function ScenariosPanel(): JSX.Element {
-  const navigate = useNavigate();
-  const practiceScenario = (scenario_id: number) => {
-    navigate(`scenario/${scenario_id}`);
-  };
+export default function ScenariosPanel({ createScenario }: { createScenario: (isOpen: boolean) => void }): JSX.Element {
+	const navigate = useNavigate();
+	const practiceScenario = (scenario_id: number) => {
+		navigate(`scenario/${scenario_id}`);
+	};
 
-  const [scenarios, setScenarios] = useState<Scenario[]>([]);
+	const [scenarios, setScenarios] = useState<Scenario[]>([]);
 
-  useEffect(() => {
-    const fetchScenarios = async () => {
-      const res = await axiosInstance.get("/scenarios");
-      setScenarios(res.data);
-    };
+	useEffect(() => {
+		const fetchScenarios = async () => {
+			const res = await axiosInstance.get("/scenarios");
+			setScenarios(res.data);
+		};
 
-    fetchScenarios();
-  }, [])
+		fetchScenarios();
+	}, [])
 
-  return (
-    <div>
-      <CarouselPanel title="Learn by Scenarios.">
-        {/* Scenario items would go here */}
-        {scenarios.map((scenario) => (
-          <div
-            key={scenario.id}
-            className="carousel-item"
-            style={{
-              backgroundImage: `url(${scenario.image_path || PlaceholderImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-            onClick={() => practiceScenario(scenario.id)}
-          >
-            {scenario.scenario_name}
-          </div>
-        ))}
-        <div
-          className="carousel-item"
-          style={{
-            backgroundImage: `url(${PlaceholderImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          onClick={() => { navigate("/"); }}
-        >
-          <div className="carousel-item-title">
-            Create your own scenario!
-          </div>
-        </div>
-        <div className="space-item"></div>
-      </CarouselPanel>
-    </div>
-  );
+	return (
+		<div>
+			<CarouselPanel title="Learn by Scenarios.">
+				{/* Scenario items would go here */}
+				{scenarios.map((scenario) => (
+					<div
+						key={scenario.id}
+						className="carousel-item"
+						style={{
+							backgroundImage: `url(${scenario.image_path || PlaceholderImage})`,
+							backgroundSize: "cover",
+							backgroundPosition: "center",
+						}}
+						onClick={() => practiceScenario(scenario.id)}
+					>
+						{scenario.scenario_name}
+					</div>
+				))}
+				<div
+					className="carousel-item"
+					style={{
+						backgroundImage: `url(${PlaceholderImage})`,
+						backgroundSize: "cover",
+						backgroundPosition: "center",
+					}}
+					onClick={() => { createScenario(true) }}
+				>
+					<div className="carousel-item-title" >
+						Create your own scenario!
+					</div>
+				</div>
+				<div className="space-item"></div>
+			</CarouselPanel>
+		</div>
+	);
 }

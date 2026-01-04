@@ -24,13 +24,14 @@ router = APIRouter(prefix="/scenarios", tags=["scenarios"])
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_scenario(
     request: CreateScenarioRequest,
-    current_user=Depends(get_current_user),
+    # current_user=Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     try:
         # Use the authenticated user's ID
         new_scenario = await create_scenario_service(
-            user_id=current_user.id,
+            user_id=None,
+            # user_id=current_user.id,
             scenario_name=request.scenario_name,
             vocabulary=request.vocabulary,
             level=request.level,
