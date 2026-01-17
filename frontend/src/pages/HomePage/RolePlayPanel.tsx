@@ -51,7 +51,7 @@ export default function RolePlayPanel({ createRolePlay }: { createRolePlay: (isO
                     onClick={() => { createRolePlay(true) }}
                 >
                     <div>
-                        Create your own Play!
+                        Create your own Role-Play!
                     </div>
                 </div>
                 <div className="space-item"></div>

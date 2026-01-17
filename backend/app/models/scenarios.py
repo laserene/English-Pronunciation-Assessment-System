@@ -29,10 +29,3 @@ class Scenario(Base):
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
     )
-
-    script_lines = relationship(
-        "ScriptLine",
-        back_populates="scenario",
-        cascade="all, delete-orphan",
-        passive_deletes=True,
-    )

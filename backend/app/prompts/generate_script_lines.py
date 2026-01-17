@@ -16,7 +16,6 @@ Level definitions (STRICT):
 Beginner (IELTS < 6.0):
 - Use short, simple sentences (5–8 words on average)
 - Focus on basic questions and direct answers
-- Use present simple tense only
 - Use concrete, everyday topics
 - Avoid idioms, passive voice, and complex clauses
 - Language should reflect limited fluency but remain natural
@@ -24,7 +23,6 @@ Beginner (IELTS < 6.0):
 Intermediate (IELTS 6.0–7.0):
 - Use clear, natural conversational English
 - Include compound and some complex sentences
-- Use present, past, and simple future tenses
 - Use basic connectors (because, so, but, although)
 - Maintain context across turns
 - Language should sound like a competent, everyday speaker
@@ -44,6 +42,8 @@ Instructions:
 - Generate AT LEAST 10 PAIRS of dialogue (minimum 20 turns total) for Intermediate and Advanced level.
 - Start turn_index at 1 and increment sequentially.
 - Naturally incorporate the provided vocabulary.
+- Emotion is applicable with ai message only. Possible emotions are: neutral, annoyance, happy, rejoice only. Try to make
+ai message as diverse in emotions.
 - Do NOT include id, created_at, or updated_at.
 - Do NOT include any fields other than: scenario_id, speaker, turn_index, expected_text.
 - Output ONLY valid JSON. No explanations. No markdown.
@@ -60,6 +60,7 @@ Required output format:
     {{
       "scenario_id": <scenario_id>,
       "speaker": "ai",
+      "emotion": "happy",
       "turn_index": 2,
       "expected_text": "..."
     }}

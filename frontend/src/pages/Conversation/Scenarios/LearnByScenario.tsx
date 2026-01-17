@@ -31,23 +31,24 @@ export default function LearnByScenario(): JSX.Element {
         scenarioId = 0;
     }
     useEffect(() => {
-        const fetchScenario = async () => {
+        const fetchScenarioWithScriptLines = async () => {
             if (!scenarioId) return;
 
             const res = await axiosInstance.get(
                 `/scenarios/${scenarioId}/scripts`
             );
 
+            console.log(res.data)
+
             setScriptLines(res.data.script_lines);
             setVocabulary(res.data.vocabulary);
         };
 
-        fetchScenario();
+        fetchScenarioWithScriptLines();
     }, [scenarioId]);
 
     const handleEvalReceived = (data: any) => {
         setEvalData(prev => [...prev, data]);
-        setCurrentTurn(currentTurn + 2);    // Need improvement for pausing in AI turn
     };
 
     const handleShowEval = (index: number) => {
@@ -70,6 +71,7 @@ export default function LearnByScenario(): JSX.Element {
                         title="Dialogue Script"
                         height={312}
                         scripts={scriptLines.slice(0, currentTurn)}
+                        evalData={evalData}
                         onShowEval={handleShowEval}
                     >
                         <InputModePanel

@@ -1,5 +1,4 @@
 import tempfile
-from app.helpers.audio import convert_to_wav
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,31 +6,35 @@ from starlette import status
 
 from app.auth.oauth2 import get_current_user
 from app.database import get_db
+from app.helpers.audio import convert_to_wav
 from app.schemas.scenarios import (
     CreateScenarioRequest,
+    GetScenarioMetadataResponse,
     GetScenarioWithScriptLinesResponse,
 )
 from app.services.scenarios import (
     create_scenario_service,
     evaluate_script_line_service,
     get_scenario_with_script_lines_service,
-    get_scenarios_service,
+    get_all_scenarios_metadata_service,
 )
 
 router = APIRouter(prefix="/scenarios", tags=["scenarios"])
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("", status_code=status.HTTP_201_CREATED)
 async def create_scenario(
     request: CreateScenarioRequest,
-    # current_user=Depends(get_current_user),
+    current_user=Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
+    """
+    Create a scenario router
+    """
     try:
         # Use the authenticated user's ID
         new_scenario = await create_scenario_service(
-            user_id=None,
-            # user_id=current_user.id,
+            user_id=current_user.id,
             scenario_name=request.scenario_name,
             vocabulary=request.vocabulary,
             level=request.level,
@@ -47,16 +50,18 @@ async def create_scenario(
         )
 
 
-@router.get("/", status_code=status.HTTP_200_OK)
-async def get_scenarios(
+@router.get(
+    "", response_model=list[GetScenarioMetadataResponse], status_code=status.HTTP_200_OK
+)
+async def get_all_scenarios_metadata(
     current_user=Depends(get_current_user), db: AsyncSession = Depends(get_db)
 ):
     """
-    Get scenarios for the authenticated user.
+    Get all scenarios metadata for the authenticated user.
     Now secure - users can only access their own scenarios.
     """
     try:
-        scenarios = await get_scenarios_service(
+        scenarios = await get_all_scenarios_metadata_service(
             user_id=current_user.id,  # Use authenticated user's ID
             db=db,
         )
@@ -64,14 +69,14 @@ async def get_scenarios(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to retrieve scenarios: {str(e)}",
+            detail=f"Failed to retrieve all scenarios metadata: {str(e)}",
         )
 
 
 @router.get(
     "/{scenario_id}/scripts",
-    status_code=status.HTTP_200_OK,
     response_model=GetScenarioWithScriptLinesResponse,
+    status_code=status.HTTP_200_OK,
 )
 async def get_scenario_with_script_lines(
     scenario_id: int,
@@ -82,12 +87,16 @@ async def get_scenario_with_script_lines(
     Get scripts for a specific scenario belonging to the authenticated user.
     """
     try:
-        scenario = await get_scenario_with_script_lines_service(
-            user_id=current_user.id,
+        vocabulary, script_lines = await get_scenario_with_script_lines_service(
             scenario_id=scenario_id,
+            user_id=current_user.id,
             db=db,
         )
-        return scenario
+        return {
+            "id": scenario_id,
+            "vocabulary": vocabulary,
+            "script_lines": script_lines,
+        }
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -108,6 +117,7 @@ async def evaluate_speech(
     turn_index: str = Form(
         ..., description="Current dialogue turn index to evaluate against the script"
     ),
+    expected_text: str = Form(..., description="Reference text for evaluation"),
     current_user=Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):

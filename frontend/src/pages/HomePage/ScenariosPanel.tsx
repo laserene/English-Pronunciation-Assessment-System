@@ -57,7 +57,7 @@ export default function ScenariosPanel({ createScenario }: { createScenario: (is
 					onClick={() => { createScenario(true) }}
 				>
 					<div className="carousel-item-title" >
-						Create your own scenario!
+						Create your own Scenario!
 					</div>
 				</div>
 				<div className="space-item"></div>
