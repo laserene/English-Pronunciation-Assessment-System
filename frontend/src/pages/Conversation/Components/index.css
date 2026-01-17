@@ -59,7 +59,7 @@
 
 /* Component classes */
 .interaction-panel {
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   flex: 1;
 
   background-color: #f5f5f7;
@@ -126,6 +126,26 @@
   height: 100%;
   padding: 16px;
   border-top: 1px solid #d0d0d0;
+
+  /* display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center; */
+}
+
+.interaction-block-content-inner.suggestion-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+.interaction-block-content-inner .suggestion-item {
+  padding: 8px;
+  border-radius: 16px;
+  background-color: #ffe5cd;
+  border: 1px solid #ffb28e;
+  cursor: pointer;
 }
 
 .user-input {

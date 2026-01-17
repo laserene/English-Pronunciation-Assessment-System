@@ -71,7 +71,7 @@ export default function LearnByScenario(): JSX.Element {
                     <SuggestionPanel title="Vocabulary" elements={vocabulary} />
                     <MessagePanel
                         title="Dialogue Script"
-                        height={312}
+                        height={300}
                         scripts={scriptLines.slice(0, currentTurn)}
                         evalData={evalData}
                         onShowEval={handleShowEval}

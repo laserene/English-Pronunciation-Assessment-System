@@ -6,7 +6,7 @@ export default function SuggestionPanel({ title, elements }: { title: string, el
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
   };
-  const expandedHeight = "120px";
+  const expandedHeight = "112px";
   return (
     <div className="interaction-block">
       <div className="interaction-block-title-wrapper">
@@ -20,11 +20,11 @@ export default function SuggestionPanel({ title, elements }: { title: string, el
           }`}
         style={{ "--expanded-height": expandedHeight } as React.CSSProperties}
       >
-        <div className="interaction-block-content-inner">
+        <div className="interaction-block-content-inner suggestion-grid">
           {elements.map((element, index) => (
-            <div key={index} className="suggestion-item">
+            <span key={index} className="suggestion-item">
               {element}
-            </div>
+            </span>
           ))}
         </div>
       </div>
