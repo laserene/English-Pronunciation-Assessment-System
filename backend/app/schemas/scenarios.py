@@ -35,6 +35,7 @@ class GetScenarioMetadataResponse(BaseModel):
 # GetScenarioWithScriptLinesResponse
 class GetScenarioWithScriptLinesResponse(BaseModel):
     id: int = Field(..., description="ID of the scenario")
+    scenario_name: str = Field(..., description="Name of the scenario")
     vocabulary: List[str] = Field(..., description="Vocabulary of the scenario")
     script_lines: List[ScriptLine] = Field(
         ..., description="Script lines of the scenario"

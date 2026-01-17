@@ -1,6 +1,6 @@
 import { JSX, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Header from "../../HomePage/header.tsx";
+import Header from "../Components/Header.tsx";
 import Live2DPanel from "../Live2DPanel.tsx";
 import InteractionPanel from "../Components/InteractionPanel.tsx";
 import SuggestionPanel from "../Components/SuggestionPanel.tsx";
@@ -19,6 +19,7 @@ interface ScriptLine {
 export default function LearnByScenario(): JSX.Element {
     const { scenario_id } = useParams<{ scenario_id: string }>();
     const [scriptLines, setScriptLines] = useState<ScriptLine[]>([]);
+    const [scenarioName, setScenarioName] = useState<string>("");
     const [vocabulary, setVocabulary] = useState<string[]>([]);
     const [currentTurn, setCurrentTurn] = useState(1);
     const [evalData, setEvalData] = useState<any[]>([]);
@@ -40,6 +41,7 @@ export default function LearnByScenario(): JSX.Element {
 
             console.log(res.data)
 
+            setScenarioName(res.data.scenario_name);
             setScriptLines(res.data.script_lines);
             setVocabulary(res.data.vocabulary);
         };
@@ -62,7 +64,7 @@ export default function LearnByScenario(): JSX.Element {
 
     return (
         <>
-            <Header />
+            <Header scenario_name={scenarioName} />
             <div className="flex-layout">
                 <Live2DPanel />
                 <InteractionPanel>

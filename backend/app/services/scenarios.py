@@ -71,7 +71,7 @@ async def get_scenario_with_script_lines_service(
     script_lines_response = await generate_json(formatted_prompt)
     script_lines = script_lines_response.get("script_lines", [])
 
-    return scenarios.vocabulary, script_lines
+    return (scenarios.scenario_name, scenarios.vocabulary, script_lines)
 
 
 async def evaluate_script_line_service(

@@ -87,13 +87,18 @@ async def get_scenario_with_script_lines(
     Get scripts for a specific scenario belonging to the authenticated user.
     """
     try:
-        vocabulary, script_lines = await get_scenario_with_script_lines_service(
+        (
+            scenario_name,
+            vocabulary,
+            script_lines,
+        ) = await get_scenario_with_script_lines_service(
             scenario_id=scenario_id,
             user_id=current_user.id,
             db=db,
         )
         return {
             "id": scenario_id,
+            "scenario_name": scenario_name,
             "vocabulary": vocabulary,
             "script_lines": script_lines,
         }

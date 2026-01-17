@@ -3,6 +3,40 @@
   overflow-y: scroll;
 }
 
+#header {
+  height: 80px;
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 24px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+#header > .welcome-text {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#header > .avatar {
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  margin-right: 20px;
+  background-image: url("../../assets/images/17a5f1b042267ce046b552527c248b94.jpg");
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+#header > .avatar:hover {
+  transform: scale(1.12);
+}
+
 .carousel-panel-title {
   padding-left: 160px;
   font-size: 32px;
