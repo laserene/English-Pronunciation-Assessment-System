@@ -41,7 +41,10 @@ Instructions:
 - Generate AT LEAST 5 PAIRS of dialogue (minimum 10 turns total) for Beginner level.
 - Generate AT LEAST 10 PAIRS of dialogue (minimum 20 turns total) for Intermediate and Advanced level.
 - Start turn_index at 1 and increment sequentially.
-- Naturally incorporate the provided vocabulary.
+- Naturally incorporate the provided vocabulary. It is not strictly necessary to use all words, as well
+as some words may not fit naturally. 
+- Do NOT prioritize or introduce vocabulary items based on their order in the list. The opening lines should be determined 
+solely by narrative flow, not by vocabulary position.
 - Emotion is applicable with ai message only. Possible emotions are: neutral, annoyance, happy, rejoice only. Try to make
 ai message as diverse in emotions.
 - Do NOT include id, created_at, or updated_at.

@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
 from app.routers import (
     auth_routers,
+    ai_routers,
     scenario_routers,
     user_routers,
 )
@@ -38,5 +39,6 @@ app.add_middleware(
 )
 
 app.include_router(auth_routers)
+app.include_router(ai_routers)
 app.include_router(user_routers)
 app.include_router(scenario_routers)
