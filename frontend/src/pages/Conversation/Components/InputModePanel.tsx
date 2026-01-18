@@ -64,8 +64,8 @@ export default function InputModePanel({
 				type: mediaRecorder.mimeType,
 			});
 
-			setCurrentTurn((prev) => prev + 1);
 			sendAudioToBackend(audioBlob);
+			setCurrentTurn((prev) => prev + 1);
 		};
 
 		// Audio Visualizer

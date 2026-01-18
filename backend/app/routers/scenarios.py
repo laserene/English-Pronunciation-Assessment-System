@@ -1,4 +1,9 @@
+import json
+import os
+import uuid
 import tempfile
+from pathlib import Path
+from typing import Optional
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -8,7 +13,6 @@ from app.auth.oauth2 import get_current_user
 from app.database import get_db
 from app.helpers.audio import convert_to_wav
 from app.schemas.scenarios import (
-    CreateScenarioRequest,
     GetScenarioMetadataResponse,
     GetScenarioWithScriptLinesResponse,
     EvaluateScriptLineResponse,
@@ -22,29 +26,66 @@ from app.services.scenarios import (
 
 router = APIRouter(prefix="/scenarios", tags=["scenarios"])
 
+UPLOAD_DIR = Path("uploads/scenarios")
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_scenario(
-    request: CreateScenarioRequest,
+    scenario_name: str = Form(...),
+    vocabulary: str = Form(...),  # Will be JSON string
+    level: str = Form(...),
+    description: str = Form(...),
+    image: Optional[UploadFile] = File(None),
     current_user=Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     """
-    Create a scenario router
+    Create a scenario with optional image upload
     """
     try:
-        # Use the authenticated user's ID
+        vocabulary_list = json.loads(vocabulary)
+        image_path = None
+        if image:
+            allowed_types = {"image/jpeg", "image/png", "image/gif", "image/webp"}
+            if image.content_type not in allowed_types:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed.",
+                )
+
+            file_extension = image.filename.split(".")[-1]
+            unique_filename = f"{uuid.uuid4()}.{file_extension}"
+            file_path = UPLOAD_DIR / unique_filename
+
+            with open(file_path, "wb") as buffer:
+                content = await image.read()
+                buffer.write(content)
+
+            image_path = f"/uploads/scenarios/{unique_filename}"
+
         new_scenario = await create_scenario_service(
             user_id=current_user.id,
-            scenario_name=request.scenario_name,
-            vocabulary=request.vocabulary,
-            level=request.level,
-            description=request.description,
-            image_path=request.image_path,
+            scenario_name=scenario_name,
+            vocabulary=vocabulary_list,
+            level=level,
+            description=description,
+            image_path=image_path,
             db=db,
         )
+
         return {"message": "Scenario created successfully.", "scenario": new_scenario}
+
+    except json.JSONDecodeError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid vocabulary format. Must be a valid JSON array.",
+        )
     except Exception as e:
+        # Clean up uploaded file if scenario creation fails
+        if image_path and os.path.exists(file_path):
+            os.remove(file_path)
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to create scenario: {str(e)}",

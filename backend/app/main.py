@@ -47,4 +47,6 @@ app.include_router(scenario_routers)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = BASE_DIR / "static"
+UPLOADS_DIR = BASE_DIR / "uploads"
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")

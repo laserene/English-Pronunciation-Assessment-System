@@ -12,7 +12,7 @@ export default function Login(): JSX.Element {
 
   const submitLoginRequest = async () => {
     if (!email || !password) {
-      setError("Vui lòng nhập email và mật khẩu");
+      setError("Please enter email and password");
       return;
     }
 
@@ -32,7 +32,7 @@ export default function Login(): JSX.Element {
       navigate("/");
     } catch (err: any) {
       setError(
-        err?.response?.data?.message || "Đăng nhập thất bại"
+        err?.response?.data?.message || "Login failed"
       );
     } finally {
       setLoading(false);
@@ -47,7 +47,7 @@ export default function Login(): JSX.Element {
       }}
     >
       <div>
-        <h1>Đăng nhập</h1>
+        <h1>Sign In</h1>
       </div>
 
       <div>
@@ -63,7 +63,7 @@ export default function Login(): JSX.Element {
       <div>
         <input
           type="password"
-          placeholder="Mật khẩu"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="current-password"
@@ -74,7 +74,7 @@ export default function Login(): JSX.Element {
 
       <div className="auth-btn-field">
         <button className="auth-btn" type="submit" disabled={loading}>
-          {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+          {loading ? "Signing in..." : "Sign In"}
         </button>
 
         <button
@@ -82,7 +82,8 @@ export default function Login(): JSX.Element {
           className="auth-btn ask-register-btn"
           onClick={() => navigate("/register")}
         >
-          Chưa có tài khoản? Đăng ký
+          {/* Chưa có tài khoản? Đăng ký */}
+          Don't have an account? Sign Up
         </button>
       </div>
     </form>

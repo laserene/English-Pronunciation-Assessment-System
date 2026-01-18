@@ -106,7 +106,7 @@ export default function LearnByScenario(): JSX.Element {
                     - Transcription: {evalData[selectedEvalIndex]?.transcription} <br></br>
                     - Reference text: {evalData[selectedEvalIndex]?.expected_text} <br></br>
                     - Transcription phoneme: {evalData[selectedEvalIndex]?.transcription_phoneme} <br></br>
-                    - Reference phoneme: {evalData[selectedEvalIndex]?.expected_text_phoneme} <br></br>
+                    - Reference phoneme: {evalData[selectedEvalIndex]?.expected_phoneme} <br></br>
                     - WER: {evalData[selectedEvalIndex]?.wer} <br></br>
                     - CER: {evalData[selectedEvalIndex]?.cer}
                 </div>

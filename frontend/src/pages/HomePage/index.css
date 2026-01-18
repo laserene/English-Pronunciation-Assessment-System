@@ -61,6 +61,11 @@
   padding-bottom: 6px;
 }
 
+.carousel-item-banner {
+  width: 100%;
+  padding: 12px;
+}
+
 .carousel-item-area {
   display: flex;
   gap: 32px;
@@ -125,6 +130,43 @@
 
   cursor: pointer;
   transition: transform 0.2s ease;
+
+  position: relative;
+}
+
+/* Level Badge */
+.level-badge {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 12px;
+  border-radius: 20px;
+
+  background-color: rgba(255, 255, 255);
+  backdrop-filter: blur(8px);
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  opacity: 0.9;
+}
+
+.level-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.level-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d1d1f;
+  text-transform: capitalize;
 }
 
 .carousel-item:hover {

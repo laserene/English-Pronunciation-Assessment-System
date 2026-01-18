@@ -20,6 +20,23 @@ export default function ScenariosPanel({ createScenario }: { createScenario: (is
 
 	const [scenarios, setScenarios] = useState<Scenario[]>([]);
 
+	const getLevelColor = (level: string) => {
+		switch (level.toLowerCase()) {
+			case 'beginner':
+				return '#22c55e';
+			case 'intermediate':
+				return '#eab308';
+			case 'advanced':
+				return '#ef4444';
+			default:
+				return '#6b7280';
+		}
+	};
+
+	const capitalizeLevel = (level: string) => {
+		return level.charAt(0).toUpperCase() + level.slice(1);
+	};
+
 	useEffect(() => {
 		const fetchScenarios = async () => {
 			const res = await axiosInstance.get("/scenarios");
@@ -45,6 +62,14 @@ export default function ScenariosPanel({ createScenario }: { createScenario: (is
 						onClick={() => practiceScenario(scenario.id)}
 					>
 						{scenario.scenario_name}
+
+						<div className="level-badge">
+							<div
+								className="level-circle"
+								style={{ backgroundColor: getLevelColor(scenario.level) }}
+							/>
+							<span className="level-text">{capitalizeLevel(scenario.level)}</span>
+						</div>
 					</div>
 				))}
 				<div

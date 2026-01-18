@@ -7,6 +7,7 @@ from sqlalchemy import or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
+from app.config import settings
 from app.models import Scenario
 from app.prompts import generate_script_lines_prompt
 from app.services.llm import generate_json
@@ -23,6 +24,7 @@ async def create_scenario_service(
     description: str | None = None,
     image_path: str | None = None,
 ):
+    image_path = f"{settings.backend_url}{image_path}" if image_path else None
     new_scenario = Scenario(
         user_id=user_id,
         scenario_name=scenario_name,
@@ -32,7 +34,8 @@ async def create_scenario_service(
         image_path=image_path,
     )
     db.add(new_scenario)
-    await db.flush()  # Ensure the new scenario is written to the DB
+    await db.commit()
+    await db.refresh(new_scenario)
     return new_scenario
 
 

@@ -3,7 +3,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from app.auth.jwt import create_token, decode_token
-from app.auth.oauth2 import get_current_user
 from app.database import get_db
 from app.schemas.tokens import Token
 from app.schemas.users import UserLoginRequest, UserRegisterRequest

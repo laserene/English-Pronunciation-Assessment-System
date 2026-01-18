@@ -1,0 +1,227 @@
+.create-form-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px;
+  background: white;
+  border-radius: 20px;
+}
+
+.create-form-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 28px 0;
+  text-align: center;
+  letter-spacing: -0.5px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-left: 4px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  border: 1.5px solid #d2d2d7;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #005ef4;
+  box-shadow: 0 0 0 4px rgba(0, 94, 244, 0.1);
+}
+
+.form-input::placeholder {
+  color: #86868b;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  line-height: 1.5;
+}
+
+select.form-input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2386868b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+
+select.form-input:focus {
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23005ef4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* File Upload Styles */
+.file-upload-label {
+  cursor: pointer;
+  display: block;
+}
+
+.file-upload-input {
+  display: none;
+}
+
+.file-upload-box {
+  border: 2px dashed #d2d2d7;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
+}
+
+.file-upload-box:hover {
+  border-color: #005ef4;
+  background-color: #f5f8ff;
+}
+
+.upload-icon {
+  width: 48px;
+  height: 48px;
+  color: #86868b;
+  margin: 0 auto 12px;
+}
+
+.upload-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1d1d1f;
+  margin: 0 0 4px 0;
+}
+
+.upload-hint {
+  font-size: 13px;
+  color: #86868b;
+  margin: 0;
+}
+
+/* Image Preview */
+.image-preview-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid #d2d2d7;
+}
+
+.image-preview {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.remove-image-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.remove-image-btn svg {
+  width: 16px;
+  height: 16px;
+  color: white;
+  stroke-width: 2.5;
+}
+
+/* Submit Button */
+.submit-button {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  letter-spacing: -0.2px;
+  background-color: #005ef4;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 94, 244, 0.3);
+  margin-top: 8px;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: #0051d5;
+  box-shadow: 0 4px 12px rgba(0, 94, 244, 0.4);
+  transform: translateY(-1px);
+}
+
+.submit-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 94, 244, 0.3);
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .create-form-container {
+    padding: 24px 20px;
+  }
+
+  .create-form-title {
+    font-size: 24px;
+  }
+
+  .file-upload-box {
+    padding: 32px 16px;
+  }
+}

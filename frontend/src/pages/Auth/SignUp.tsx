@@ -25,12 +25,13 @@ export default function SignUp(): JSX.Element {
       !password ||
       !confirmPassword
     ) {
-      setError("Vui lòng điền đầy đủ thông tin");
+      // setError("Vui lòng điền đầy đủ thông tin");
+      setError("Please fill in all fields");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("Mật khẩu xác nhận không khớp");
+      setError("Password confirmation does not match");
       return;
     }
 
@@ -50,7 +51,7 @@ export default function SignUp(): JSX.Element {
       navigate("/login");
     } catch (err: any) {
       setError(
-        err?.response?.data?.message || "Đăng ký thất bại"
+        err?.response?.data?.message || "Registration failed"
       );
     } finally {
       setLoading(false);
@@ -65,13 +66,13 @@ export default function SignUp(): JSX.Element {
       }}
     >
       <div>
-        <h1>Đăng ký</h1>
+        <h1>Sign Up</h1>
       </div>
 
       <div>
         <input
           type="text"
-          placeholder="Tên đăng nhập"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           autoComplete="username"
@@ -81,13 +82,13 @@ export default function SignUp(): JSX.Element {
       <div>
         <input
           type="text"
-          placeholder="Tên"
+          placeholder="First Name"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
         />
         <input
           type="text"
-          placeholder="Họ"
+          placeholder="Last Name"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
         />
@@ -106,7 +107,7 @@ export default function SignUp(): JSX.Element {
       <div>
         <input
           type="password"
-          placeholder="Mật khẩu"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="new-password"
@@ -116,7 +117,7 @@ export default function SignUp(): JSX.Element {
       <div>
         <input
           type="password"
-          placeholder="Xác nhận mật khẩu"
+          placeholder="Confirm Password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           autoComplete="new-password"
@@ -127,7 +128,7 @@ export default function SignUp(): JSX.Element {
 
       <div className="auth-btn-field">
         <button className="auth-btn" type="submit" disabled={loading}>
-          {loading ? "Đang đăng ký..." : "Đăng ký"}
+          {loading ? "Signing up..." : "Sign Up"}
         </button>
 
         <button
@@ -135,7 +136,7 @@ export default function SignUp(): JSX.Element {
           className="auth-btn ask-register-btn"
           onClick={() => navigate("/login")}
         >
-          Đã có tài khoản? Đăng nhập
+          Already have an account? Sign In
         </button>
       </div>
     </form>
