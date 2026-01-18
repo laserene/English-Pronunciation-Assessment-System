@@ -1,6 +1,7 @@
 # Self-defined ignores
 uploads/
 .ruff_cache/
+static/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

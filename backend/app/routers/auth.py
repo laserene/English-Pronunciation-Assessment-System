@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from app.auth.jwt import create_token, decode_token
+from app.auth.oauth2 import get_current_user
 from app.database import get_db
 from app.schemas.tokens import Token
 from app.schemas.users import UserLoginRequest, UserRegisterRequest
@@ -60,7 +61,7 @@ async def login(
         value=refresh_token,
         httponly=True,
         secure=False,  # HTTPS only
-        samesite="strict",  # or "lax"
+        samesite="lax",  # or "lax"
         max_age=60 * 60 * 24 * 7,  # 7 days
     )
 
@@ -92,8 +93,20 @@ async def refresh_access_token(
         key="refresh_token",
         value=new_refresh_token,
         httponly=True,
-        secure=True,
-        samesite="strict",
+        secure=False,
+        samesite="lax",
     )
 
     return {"access_token": new_access_token}
+
+
+@router.post("/logout")
+async def logout(response: Response):
+    response.delete_cookie(
+        key="refresh_token",
+        path="/",
+        httponly=True,
+        secure=False,
+        samesite="lax",
+    )
+    return {"detail": "Logged out"}
