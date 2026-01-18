@@ -9,46 +9,158 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+}
+
+#auth_page form {
+  background: white;
+  padding: 48px 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#auth_page h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 8px 0;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+#auth_page input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  border: 1.5px solid #d2d2d7;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+#auth_page input:focus {
+  outline: none;
+  border-color: #005ef4;
+  box-shadow: 0 0 0 4px rgba(0, 94, 244, 0.1);
+}
+
+#auth_page input::placeholder {
+  color: #86868b;
+}
+
+#auth_page > div {
+  display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-#auth_page input {
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 16px;
+/* For the name fields container in SignUp */
+#auth_page
+  form
+  > div:has(input[placeholder*="First"] + input[placeholder*="Last"]),
+#auth_page
+  form
+  > div:has(input[placeholder*="Tên"] + input[placeholder*="Họ"]) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 .auth-btn {
-  padding: 12px;
-  padding-left: 20px;
-  padding-right: 20px;
+  width: 100%;
+  padding: 14px 20px;
   border-radius: 12px;
-  font-size: 18px;
-  background-color: white;
-  cursor: pointer;
-
+  font-size: 17px;
   font-weight: 600;
-  border: 2px solid #005ef4;
-  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  letter-spacing: -0.2px;
 }
 
-.auth-btn:hover {
-  background-color: #5d9bff;
+.auth-btn:not(.ask-register-btn) {
+  background-color: #005ef4;
   color: white;
+  box-shadow: 0 2px 8px rgba(0, 94, 244, 0.3);
+}
+
+.auth-btn:not(.ask-register-btn):hover:not(:disabled) {
+  background-color: #0051d5;
+  box-shadow: 0 4px 12px rgba(0, 94, 244, 0.4);
+  transform: translateY(-1px);
+}
+
+.auth-btn:not(.ask-register-btn):active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 94, 244, 0.3);
+}
+
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .auth-btn-field {
   display: flex;
-  gap: 4px;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .ask-register-btn {
-  background-color: #e6e6e6;
-  border: 2px solid black;
+  background-color: #f5f5f7;
+  color: #1d1d1f;
+  border: 1.5px solid #d2d2d7;
 }
 
 .ask-register-btn:hover {
-  background-color: #c4c4c4;
-  color: black;
+  background-color: #e8e8ed;
+  border-color: #b8b8bd;
+}
+
+.ask-register-btn:active {
+  background-color: #d2d2d7;
+}
+
+#auth_page p[style*="color: red"] {
+  color: #ff3b30 !important;
+  font-size: 14px;
+  margin: -8px 0 0 0;
+  padding: 12px 16px;
+  background-color: #fff0f0;
+  border-radius: 8px;
+  border-left: 3px solid #ff3b30;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #auth_page form {
+    padding: 36px 28px;
+    max-width: 100%;
+  }
+
+  #auth_page h1 {
+    font-size: 28px;
+  }
+
+  #auth_page
+    form
+    > div:has(input[placeholder*="First"] + input[placeholder*="Last"]),
+  #auth_page
+    form
+    > div:has(input[placeholder*="Tên"] + input[placeholder*="Họ"]) {
+    grid-template-columns: 1fr;
+  }
 }

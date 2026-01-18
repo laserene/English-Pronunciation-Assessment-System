@@ -1,17 +1,30 @@
-import { JSX } from "react";
+import { JSX, useEffect, useState } from "react";
+import axiosInstance from "../../../utils/axios";
 import "./index.css";
 
 interface ScriptLine {
 	speaker: "user" | "ai";
+	emotion?: string | null; // neutral, angry, happy, surprised, rejoice, shy, sad
 	turn_index: number;
 	expected_text: string;
+}
+
+interface EvalLine {
+	transcription: string;
+	expected_text: string;
+	transcription_phoneme: string;
+	expected_phoneme: string;
+	wer: number;
+	cer: number;
 }
 
 interface MessagePanelProps {
 	title: string;
 	height: number;
 	scripts: ScriptLine[];
-	evalData: any[];
+	evalData: EvalLine[];
+	currentTurn: number;
+	setCurrentTurn: React.Dispatch<React.SetStateAction<number>>;
 	onShowEval?: (index: number) => void;  // NEW
 	children: React.ReactNode
 }
@@ -21,10 +34,13 @@ export default function MessagePanel({
 	height,
 	scripts = [],
 	evalData = [],
+	currentTurn,
+	setCurrentTurn,
 	onShowEval,
 	children
 }: MessagePanelProps): JSX.Element {
 	const expandedHeight = `${height}px`;
+	const [audioPath, setAudioPath] = useState<string[]>([]);
 
 	const playUserSample = (text: string) => {
 		const utterance = new SpeechSynthesisUtterance(text);
@@ -33,6 +49,31 @@ export default function MessagePanel({
 		utterance.pitch = 1;
 		speechSynthesis.speak(utterance);
 	};
+
+	useEffect(() => {
+		const fetchAIAudioPaths = async () => {
+			if (scripts[currentTurn - 1]?.speaker !== "ai") return;
+
+			const audioUrl = await axiosInstance.post("/ai/tts", {
+				text: scripts[currentTurn - 1].expected_text,
+			});
+			setAudioPath(prev => [...prev, audioUrl.data.audio_path]);
+
+			console.log("Audio URL:", audioUrl.data.audio_path);
+			const audio = new Audio(audioUrl.data.audio_path);
+			audio.preload = "auto";
+
+			// const emotion = scripts[currentTurn - 1]?.emotion || "neutral";
+
+			console.log("start playing");
+
+			audio.play();
+			audio.onended = () => {
+				setCurrentTurn(prev => prev + 1);
+			};
+		}
+		fetchAIAudioPaths();
+	}, [currentTurn])
 
 	return (
 		<div className="interaction-block">
@@ -58,10 +99,9 @@ export default function MessagePanel({
 									onClick={() => {
 										onShowEval?.(Math.trunc((index + 1) / 2));  // Call parent callback
 									}}
-									disabled={((index / 2) > evalData.length) || (evalData.length === 0)}
+									disabled={(Math.trunc(index / 2) >= evalData.length) || (evalData.length === 0)}
 								>🔎</button>
 							)}
-
 							{script.speaker === "user" && (
 								<button
 									className="play-sample-button"

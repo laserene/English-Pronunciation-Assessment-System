@@ -10,7 +10,16 @@ interface InputModePanelProps {
 	setCurrentTurn: React.Dispatch<React.SetStateAction<number>>;
 	expectedText: string | null;
 	defaultMode?: "voice" | "typing" | null;
-	onEvalReceived?: (data: any) => void;
+	onEvalReceived?: (data: EvalLine) => void;
+}
+
+interface EvalLine {
+	transcription: string;
+	expected_text: string;
+	transcription_phoneme: string;
+	expected_phoneme: string;
+	wer: number;
+	cer: number;
 }
 
 export default function InputModePanel({
@@ -50,13 +59,13 @@ export default function InputModePanel({
 			}
 		};
 
-		mediaRecorder.onstop = () => {
+		mediaRecorder.onstop = async () => {
 			const audioBlob = new Blob(audioChunksRef.current, {
 				type: mediaRecorder.mimeType,
 			});
 
-			sendAudioToBackend(audioBlob);
 			setCurrentTurn((prev) => prev + 1);
+			sendAudioToBackend(audioBlob);
 		};
 
 		// Audio Visualizer
@@ -131,8 +140,12 @@ export default function InputModePanel({
 			cancelAnimationFrame(animationRef.current);
 		}
 
-		if (audioContextRef.current) {
+		if (
+			audioContextRef.current &&
+			audioContextRef.current.state !== "closed"
+		) {
 			audioContextRef.current.close();
+			audioContextRef.current = null;
 		}
 	};
 
@@ -143,7 +156,6 @@ export default function InputModePanel({
 		formData.append("expected_text", expectedText);
 
 		if (expectedText !== null) {
-			console.log("Sending audio for turn:", currentTurn, "Expected text:", expectedText);
 			const response = await axiosInstance.post(
 				"/scenarios/speech/submit",
 				formData,

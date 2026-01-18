@@ -16,13 +16,22 @@ interface ScriptLine {
     expected_text: string;
 }
 
+interface EvalLine {
+    transcription: string;
+    expected_text: string;
+    transcription_phoneme: string;
+    expected_phoneme: string;
+    wer: number;
+    cer: number;
+}
+
 export default function LearnByScenario(): JSX.Element {
     const { scenario_id } = useParams<{ scenario_id: string }>();
     const [scriptLines, setScriptLines] = useState<ScriptLine[]>([]);
     const [scenarioName, setScenarioName] = useState<string>("");
     const [vocabulary, setVocabulary] = useState<string[]>([]);
     const [currentTurn, setCurrentTurn] = useState(1);
-    const [evalData, setEvalData] = useState<any[]>([]);
+    const [evalData, setEvalData] = useState<EvalLine[]>([]);
     const [showPerformanceModal, setShowPerformanceModal] = useState(false);
     const [selectedEvalIndex, setSelectedEvalIndex] = useState<number>(0);
 
@@ -39,8 +48,6 @@ export default function LearnByScenario(): JSX.Element {
                 `/scenarios/${scenarioId}/scripts`
             );
 
-            console.log(res.data)
-
             setScenarioName(res.data.scenario_name);
             setScriptLines(res.data.script_lines);
             setVocabulary(res.data.vocabulary);
@@ -49,7 +56,7 @@ export default function LearnByScenario(): JSX.Element {
         fetchScenarioWithScriptLines();
     }, [scenarioId]);
 
-    const handleEvalReceived = (data: any) => {
+    const handleEvalReceived = (data: EvalLine) => {
         setEvalData(prev => [...prev, data]);
     };
 
@@ -78,6 +85,8 @@ export default function LearnByScenario(): JSX.Element {
                         title="Dialogue Script"
                         height={300}
                         scripts={scriptLines.slice(0, currentTurn)}
+                        currentTurn={currentTurn}
+                        setCurrentTurn={setCurrentTurn}
                         evalData={evalData}
                         onShowEval={handleShowEval}
                     >
