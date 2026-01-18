@@ -50,6 +50,14 @@ export default function MessagePanel({
 		speechSynthesis.speak(utterance);
 	};
 
+	const playAISample = async (index: number) => {
+		if (audioPath[index]) {
+			const audio = new Audio(audioPath[index]);
+			audio.preload = "auto";
+			audio.play();
+		}
+	};
+
 	useEffect(() => {
 		const fetchAIAudioPaths = async () => {
 			if (scripts[currentTurn - 1]?.speaker !== "ai") return;
@@ -59,13 +67,10 @@ export default function MessagePanel({
 			});
 			setAudioPath(prev => [...prev, audioUrl.data.audio_path]);
 
-			console.log("Audio URL:", audioUrl.data.audio_path);
 			const audio = new Audio(audioUrl.data.audio_path);
 			audio.preload = "auto";
 
 			// const emotion = scripts[currentTurn - 1]?.emotion || "neutral";
-
-			console.log("start playing");
 
 			audio.play();
 			audio.onended = () => {
@@ -120,7 +125,7 @@ export default function MessagePanel({
 							{script.speaker === "ai" && (
 								<button
 									className="play-sample-button"
-									onClick={() => playSample(script.expected_text, type = script.speaker)}
+									onClick={() => playAISample(Math.trunc(index / 2))}
 								>🔊</button>
 							)}
 						</div>

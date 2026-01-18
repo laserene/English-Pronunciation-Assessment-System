@@ -18,8 +18,7 @@ export default function HomePage(): JSX.Element {
 		const getCurrentUser = async () => {
 			try {
 				const response = await axiosInstance.get("/me/");
-				setUser(response.data);
-				console.log("User info:", response.data);
+				localStorage.setItem("user_id", response.data.id);
 			} catch (error) {
 				console.error("Error fetching user info:", error);
 			}

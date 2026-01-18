@@ -6,6 +6,7 @@ import InteractionPanel from "../Components/InteractionPanel.tsx";
 import SuggestionPanel from "../Components/SuggestionPanel.tsx";
 import MessagePanel from "../Components/MessagePanel.tsx";
 import InputModePanel from "../Components/InputModePanel.tsx";
+import FinishScenarioPanel from "../Components/FinishScenarioPanel.tsx";
 import Overlay from "../Components/Overlay.tsx";
 import axiosInstance from "../../../utils/axios.ts";
 import "./index.css";
@@ -34,6 +35,7 @@ export default function LearnByScenario(): JSX.Element {
     const [evalData, setEvalData] = useState<EvalLine[]>([]);
     const [showPerformanceModal, setShowPerformanceModal] = useState(false);
     const [selectedEvalIndex, setSelectedEvalIndex] = useState<number>(0);
+    const [showFinalResults, setShowFinalResults] = useState(false);
 
     let scenarioId = Number(scenario_id);
     if (Number.isNaN(scenarioId)) {
@@ -74,6 +76,43 @@ export default function LearnByScenario(): JSX.Element {
     );
     const expectedText = currentScriptLine?.expected_text ?? null;
 
+    const [werSeries, setWerSeries] = useState<number[]>([]);
+    const [cerSeries, setCerSeries] = useState<number[]>([]);
+    const [phonemeAcc, setPhonemeAcc] = useState<Record<string, number>>({});
+    const handleViewFinalResults = () => {
+        setShowFinalResults(true);
+    }
+
+    const calculateAvg = (series: number[]): number => {
+        const avg = series.length > 0
+            ? series.reduce((sum, v) => sum + v, 0) / series.length
+            : 0;
+        return avg;
+    }
+
+    useEffect(() => {
+        if (evalData.length === scriptLines.length / 2) {
+            for (let i = 0; i < evalData.length; i++) {
+                setWerSeries(prev => [...prev, evalData[i].wer]);
+                setCerSeries(prev => [...prev, evalData[i].cer]);
+            }
+        }
+
+        const saveSpeakingResults = async () => {
+            await axiosInstance.post(`/results/wer/save`, {
+                user_id: localStorage.getItem("user_id"),
+                wer_series_avg: calculateAvg(werSeries),
+                cer_series_avg: calculateAvg(cerSeries),
+            });
+        }
+
+        saveSpeakingResults();
+    }, [evalData.length]);
+
+    const handleCloseFinalResults = () => {
+        setShowFinalResults(false);
+    }
+
     return (
         <>
             <Header scenario_name={scenarioName} />
@@ -90,17 +129,32 @@ export default function LearnByScenario(): JSX.Element {
                         evalData={evalData}
                         onShowEval={handleShowEval}
                     >
-                        <InputModePanel
+                        {(evalData.length !== (scriptLines.length / 2) || (evalData.length === 0)) && <InputModePanel
                             scenarioId={scenarioId}
                             currentTurn={currentTurn}
                             setCurrentTurn={setCurrentTurn}
                             expectedText={expectedText}
                             onEvalReceived={handleEvalReceived}
-                        />
+                        />}
+
+                        {(evalData.length === (scriptLines.length / 2)) && (
+                            <FinishScenarioPanel onShowFinalResults={handleViewFinalResults} />
+                        )}
                     </MessagePanel>
                 </InteractionPanel>
             </div>
             <Overlay isOpen={showPerformanceModal} onClose={() => { handleCloseModal() }}>
+                <h2>Speech Evaluation</h2>
+                <div>
+                    - Transcription: {evalData[selectedEvalIndex]?.transcription} <br></br>
+                    - Reference text: {evalData[selectedEvalIndex]?.expected_text} <br></br>
+                    - Transcription phoneme: {evalData[selectedEvalIndex]?.transcription_phoneme} <br></br>
+                    - Reference phoneme: {evalData[selectedEvalIndex]?.expected_phoneme} <br></br>
+                    - WER: {evalData[selectedEvalIndex]?.wer} <br></br>
+                    - CER: {evalData[selectedEvalIndex]?.cer}
+                </div>
+            </Overlay>
+            <Overlay isOpen={showFinalResults} onClose={() => { handleCloseFinalResults() }}>
                 <h2>Speech Evaluation</h2>
                 <div>
                     - Transcription: {evalData[selectedEvalIndex]?.transcription} <br></br>

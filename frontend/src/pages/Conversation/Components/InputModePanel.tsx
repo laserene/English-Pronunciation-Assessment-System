@@ -184,7 +184,7 @@ export default function InputModePanel({
 					<MicVisualizer canvasRef={canvasRef} />
 				)}
 				{inputMode === null && (
-					<div id="input-mode-placeholder">
+					<div className="input-mode-placeholder">
 						Let's start...
 					</div>
 				)}

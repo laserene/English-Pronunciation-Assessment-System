@@ -9,18 +9,18 @@ import "./index.css";
 
 export default function DashboardPanel(): JSX.Element {
     const items = [
-        { id: 1, topic: "Word Error Rate", banner_color: "#f38384", background_url: WERImage },
-        { id: 2, topic: "Character Error Rate", banner_color: "rgb(141 109 255)", background_url: CharacterImage },
-        { id: 3, topic: "Phoneme Accuracy", banner_color: "rgb(196 136 31)", background_url: PhonemeImage },
+        { id: 1, topic: "Word Error Rate", path: "/wer", banner_color: "#f38384", background_url: WERImage },
+        { id: 2, topic: "Character Error Rate", path: "/cer", banner_color: "rgb(141 109 255)", background_url: CharacterImage },
+        { id: 3, topic: "Phoneme Accuracy", path: "/phoneme", banner_color: "rgb(196 136 31)", background_url: PhonemeImage },
     ]
     const navigate = useNavigate();
-    const handleClick = () => {
-        navigate("/dashboard");
+    const handleClick = (path: string) => {
+        navigate(path);
     };
 
     return (
         <div>
-            <CarouselPanel title="Your Learning Progress." scrollAmount={360}>
+            <CarouselPanel title="Your Speaking Results." scrollAmount={360}>
                 {items.map((item) => (
                     <div
                         key={item.id}
@@ -30,7 +30,7 @@ export default function DashboardPanel(): JSX.Element {
                             backgroundSize: "cover",
                             backgroundPosition: "center",
                         }}
-                        onClick={() => handleClick()}
+                        onClick={() => handleClick(item.path)}
                     >
                         <div
                             className="carousel-item-banner"
