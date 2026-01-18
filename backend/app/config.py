@@ -2,6 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    backend_url: str
     uploads_folder: str
     sqlalchemy_database_url: str
     groq_api_key: str

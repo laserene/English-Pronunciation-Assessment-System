@@ -45,8 +45,8 @@ Instructions:
 as some words may not fit naturally. 
 - Do NOT prioritize or introduce vocabulary items based on their order in the list. The opening lines should be determined 
 solely by narrative flow, not by vocabulary position.
-- Emotion is applicable with ai message only. Possible emotions are: neutral, annoyance, happy, rejoice only. Try to make
-ai message as diverse in emotions.
+- Emotion is applicable with ai message only. Possible emotions are: neutral, annoyance, happy, rejoice, surprised, 
+shy only. Try to make AI message as diverse in emotions as possible.
 - Do NOT include id, created_at, or updated_at.
 - Do NOT include any fields other than: scenario_id, speaker, turn_index, expected_text.
 - Output ONLY valid JSON. No explanations. No markdown.

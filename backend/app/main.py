@@ -1,7 +1,9 @@
+from pathlib import Path
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.database import Base, engine
 from app.routers import (
@@ -42,3 +44,7 @@ app.include_router(auth_routers)
 app.include_router(ai_routers)
 app.include_router(user_routers)
 app.include_router(scenario_routers)
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_DIR = BASE_DIR / "static"
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
