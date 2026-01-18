@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, DateTime, Integer, ForeignKey
+from sqlalchemy import Column, DateTime, Integer, ForeignKey, Float
 
 from app.database import Base
 
@@ -11,8 +11,9 @@ class Performance(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 
-    wer = Column(Integer, nullable=False)
-    cer = Column(Integer, nullable=False)
+    wer = Column(Float, nullable=False)
+    cer = Column(Float, nullable=False)
+    session_count = Column(Integer, nullable=False, default=0)
 
     created_at = Column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)

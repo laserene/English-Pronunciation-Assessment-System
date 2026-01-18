@@ -19,7 +19,9 @@ export default function FinishScenarioPanel({ onShowFinalResults }: { onShowFina
             </div>
             <div className="finish-scenario-btn-area">
                 <button
-                    className="conversation-btn finish-scenario-btn">New Session</button>
+                    className="conversation-btn finish-scenario-btn"
+                    onClick={() => window.location.reload()}
+                >New Session</button>
                 <button
                     className="conversation-btn finish-scenario-btn"
                     onClick={onShowFinalResults}>Your results</button>

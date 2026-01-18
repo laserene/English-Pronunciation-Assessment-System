@@ -5,6 +5,8 @@ import AuthPage from "./pages/Auth/index.tsx";
 import Login from "./pages/Auth/Login.tsx";
 import SignUp from "./pages/Auth/SignUp.tsx";
 import LearnByScenario from "./pages/Conversation/Scenarios/LearnByScenario.tsx";
+import PerformanceDashboard from "./pages/Dashboard/PerformanceDashboard.tsx";
+import PhonemeErrorDashboard from "./pages/Dashboard/PhonemeErrorDashboard.tsx";
 import { PublicRoute } from "./pages/Auth/PublicRoute.tsx";
 import { ProtectedRoute } from "./pages/Auth/ProtectedRoute.tsx";
 import "./index.css";
@@ -22,6 +24,8 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<HomePage />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
           <Route path="/scenario/:scenario_id/" element={<LearnByScenario />} />
+          <Route path="/performance" element={<PerformanceDashboard />} />
+          <Route path="/phoneme" element={<PhonemeErrorDashboard />} />
         </Route>
       </Routes>
     </Router >

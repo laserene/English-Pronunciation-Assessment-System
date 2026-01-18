@@ -11,6 +11,7 @@ from app.routers import (
     ai_routers,
     scenario_routers,
     user_routers,
+    performance_routers,
 )
 
 
@@ -44,6 +45,7 @@ app.include_router(auth_routers)
 app.include_router(ai_routers)
 app.include_router(user_routers)
 app.include_router(scenario_routers)
+app.include_router(performance_routers)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = BASE_DIR / "static"

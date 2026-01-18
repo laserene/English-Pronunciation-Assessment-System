@@ -38,8 +38,8 @@ Advanced (IELTS ≥ 8.0):
 Instructions:
 - Generate a coherent conversation based on the scenario.
 - Alternate speakers strictly between "user" and "ai".
-- Generate AT LEAST 5 PAIRS of dialogue (minimum 10 turns total) for Beginner level.
-- Generate AT LEAST 10 PAIRS of dialogue (minimum 20 turns total) for Intermediate and Advanced level.
+- Generate EXACTLY 5 PAIRS of dialogue (10 turns total) for Beginner and Intermediate level.
+- Generate EXACTLY 10 PAIRS of dialogue (20 turns total) for Advanced level.
 - Start turn_index at 1 and increment sequentially.
 - Naturally incorporate the provided vocabulary. It is not strictly necessary to use all words, as well
 as some words may not fit naturally. 

@@ -58,6 +58,8 @@ export default function LearnByScenario(): JSX.Element {
         fetchScenarioWithScriptLines();
     }, [scenarioId]);
 
+    console.log("Script Lines: ", scriptLines);
+
     const handleEvalReceived = (data: EvalLine) => {
         setEvalData(prev => [...prev, data]);
     };
@@ -76,9 +78,6 @@ export default function LearnByScenario(): JSX.Element {
     );
     const expectedText = currentScriptLine?.expected_text ?? null;
 
-    const [werSeries, setWerSeries] = useState<number[]>([]);
-    const [cerSeries, setCerSeries] = useState<number[]>([]);
-    const [phonemeAcc, setPhonemeAcc] = useState<Record<string, number>>({});
     const handleViewFinalResults = () => {
         setShowFinalResults(true);
     }
@@ -91,22 +90,19 @@ export default function LearnByScenario(): JSX.Element {
     }
 
     useEffect(() => {
-        if (evalData.length === scriptLines.length / 2) {
-            for (let i = 0; i < evalData.length; i++) {
-                setWerSeries(prev => [...prev, evalData[i].wer]);
-                setCerSeries(prev => [...prev, evalData[i].cer]);
+        if ((evalData.length === scriptLines.length / 2) && evalData.length !== 0) {
+            const werSeries = evalData.map(e => e.wer);
+            const cerSeries = evalData.map(e => e.cer);
+
+            const saveSpeakingResults = async () => {
+                await axiosInstance.post(`/performances/`, {
+                    wer: calculateAvg(werSeries),
+                    cer: calculateAvg(cerSeries),
+                });
             }
-        }
 
-        const saveSpeakingResults = async () => {
-            await axiosInstance.post(`/results/wer/save`, {
-                user_id: localStorage.getItem("user_id"),
-                wer_series_avg: calculateAvg(werSeries),
-                cer_series_avg: calculateAvg(cerSeries),
-            });
+            saveSpeakingResults();
         }
-
-        saveSpeakingResults();
     }, [evalData.length]);
 
     const handleCloseFinalResults = () => {
@@ -114,7 +110,7 @@ export default function LearnByScenario(): JSX.Element {
     }
 
     return (
-        <>
+        <div style={{ overflowY: "auto" }}>
             <Header scenario_name={scenarioName} />
             <div className="flex-layout">
                 <Live2DPanel />
@@ -165,6 +161,6 @@ export default function LearnByScenario(): JSX.Element {
                     - CER: {evalData[selectedEvalIndex]?.cer}
                 </div>
             </Overlay>
-        </>
+        </div>
     );
 }
