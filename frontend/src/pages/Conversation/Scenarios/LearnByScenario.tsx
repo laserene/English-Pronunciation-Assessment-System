@@ -62,6 +62,11 @@ export default function LearnByScenario(): JSX.Element {
         setShowPerformanceModal(false);
     };
 
+    const currentScriptLine = scriptLines.find(
+        line => line.turn_index === currentTurn && line.speaker === "user"
+    );
+    const expectedText = currentScriptLine?.expected_text ?? null;
+
     return (
         <>
             <Header scenario_name={scenarioName} />
@@ -79,26 +84,13 @@ export default function LearnByScenario(): JSX.Element {
                         <InputModePanel
                             scenarioId={scenarioId}
                             currentTurn={currentTurn}
+                            setCurrentTurn={setCurrentTurn}
+                            expectedText={expectedText}
                             onEvalReceived={handleEvalReceived}
                         />
                     </MessagePanel>
                 </InteractionPanel>
             </div>
-            {/* {showPerformanceModal && (
-
-                <div className="perf-panel">
-                    <button onClick={handleCloseModal}>Close ✕</button>
-                    Evaluation
-                    <div>
-                        - Transcription: {evalData[selectedEvalIndex]?.transcription} <br></br>
-                        - Reference text: {evalData[selectedEvalIndex]?.expected_text} <br></br>
-                        - Transcription phoneme: {evalData[selectedEvalIndex]?.transcription_phoneme} <br></br>
-                        - Reference phoneme: {evalData[selectedEvalIndex]?.expected_text_phoneme} <br></br>
-                        - WER: {evalData[selectedEvalIndex]?.wer} <br></br>
-                        - CER: {evalData[selectedEvalIndex]?.cer}
-                    </div>
-                </div>
-            )} */}
             <Overlay isOpen={showPerformanceModal} onClose={() => { handleCloseModal() }}>
                 <h2>Speech Evaluation</h2>
                 <div>

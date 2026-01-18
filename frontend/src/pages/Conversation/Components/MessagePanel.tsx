@@ -16,33 +16,22 @@ interface MessagePanelProps {
 	children: React.ReactNode
 }
 
-export default function MessagePanel(
-	{
-		title,
-		height,
-		scripts = [],
-		evalData = [],
-		onShowEval,
-		children
-	}: MessagePanelProps
-): JSX.Element {
-
+export default function MessagePanel({
+	title,
+	height,
+	scripts = [],
+	evalData = [],
+	onShowEval,
+	children
+}: MessagePanelProps): JSX.Element {
 	const expandedHeight = `${height}px`;
 
-	const playSample = (text: string, type: string) => {
+	const playUserSample = (text: string) => {
 		const utterance = new SpeechSynthesisUtterance(text);
 		utterance.lang = "en-US";
 		utterance.rate = 1;
 		utterance.pitch = 1;
 		speechSynthesis.speak(utterance);
-
-		if (type === "ai") {
-			utterance.onend = () => {
-				console.log("AI finished speaking");
-				setCurrentTurn(currentTurn + 1);
-			};
-		}
-
 	};
 
 	return (
@@ -67,7 +56,7 @@ export default function MessagePanel(
 								<button
 									className="play-sample-button"
 									onClick={() => {
-										onShowEval?.(Math.trunc((index + 1) / 2));  // ✅ Call parent callback
+										onShowEval?.(Math.trunc((index + 1) / 2));  // Call parent callback
 									}}
 									disabled={((index / 2) > evalData.length) || (evalData.length === 0)}
 								>🔎</button>
@@ -77,7 +66,7 @@ export default function MessagePanel(
 								<button
 									className="play-sample-button"
 									onClick={() => {
-										playSample(script.expected_text, type = script.speaker)
+										playUserSample(script.expected_text)
 									}}
 								>🔊</button>
 							)}

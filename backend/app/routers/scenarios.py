@@ -11,6 +11,7 @@ from app.schemas.scenarios import (
     CreateScenarioRequest,
     GetScenarioMetadataResponse,
     GetScenarioWithScriptLinesResponse,
+    EvaluateScriptLineResponse,
 )
 from app.services.scenarios import (
     create_scenario_service,
@@ -109,22 +110,19 @@ async def get_scenario_with_script_lines(
         )
 
 
-@router.post("/speech/submit", status_code=status.HTTP_200_OK)
+@router.post(
+    "/speech/submit",
+    response_model=EvaluateScriptLineResponse,
+    status_code=status.HTTP_200_OK,
+)
 async def evaluate_speech(
     audio: UploadFile = File(
         ...,
         description="User-recorded speech audio (webm/opus) for the current "
         "scenario turn",
     ),
-    scenario_id: str = Form(
-        ..., description="Unique identifier of the learning scenario"
-    ),
-    turn_index: str = Form(
-        ..., description="Current dialogue turn index to evaluate against the script"
-    ),
     expected_text: str = Form(..., description="Reference text for evaluation"),
     current_user=Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
 ):
     try:
         suffix = ".webm"
@@ -139,11 +137,9 @@ async def evaluate_speech(
 
         evaluation = await evaluate_script_line_service(
             filepath=temp_wav_path,
-            user_id=current_user.id,
-            scenario_id=int(scenario_id),
-            turn_index=int(turn_index),
-            db=db,
+            expected_text=expected_text,
         )
+
         return evaluation
     except Exception as e:
         print(f"Failed to evaluate scenario script: {str(e)}")

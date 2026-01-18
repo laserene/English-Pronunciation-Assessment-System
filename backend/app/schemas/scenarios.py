@@ -42,3 +42,25 @@ class GetScenarioWithScriptLinesResponse(BaseModel):
     )
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# EvaluateScriptLineResponse
+class EvaluateScriptLineResponse(BaseModel):
+    transcription: str = Field(
+        ..., description="The user's spoken text after ASR transcription"
+    )
+    expected_text: str = Field(..., description="The reference / ground-truth text")
+    transcription_phoneme: str = Field(
+        ..., description="Phoneme representation of the transcribed speech"
+    )
+    expected_text_phoneme: str = Field(
+        ..., description="Phoneme representation of the expected text"
+    )
+    wer: float = Field(
+        ..., description="Word Error Rate between expected text and transcription"
+    )
+    cer: float = Field(
+        ..., description="Character Error Rate between expected text and transcription"
+    )
+
+    model_config = ConfigDict(from_attributes=True)

@@ -7,13 +7,16 @@ import "./index.css";
 interface InputModePanelProps {
 	scenarioId: number;
 	currentTurn: number;
+	setCurrentTurn: React.Dispatch<React.SetStateAction<number>>;
+	expectedText: string | null;
 	defaultMode?: "voice" | "typing" | null;
 	onEvalReceived?: (data: any) => void;
 }
 
 export default function InputModePanel({
-	scenarioId,
 	currentTurn,
+	setCurrentTurn,
+	expectedText,
 	defaultMode = null,
 	onEvalReceived
 }: InputModePanelProps): JSX.Element {
@@ -52,8 +55,8 @@ export default function InputModePanel({
 				type: mediaRecorder.mimeType,
 			});
 
-			setCurrentTurn(currentTurn + 1);
 			sendAudioToBackend(audioBlob);
+			setCurrentTurn((prev) => prev + 1);
 		};
 
 		// Audio Visualizer
@@ -137,21 +140,23 @@ export default function InputModePanel({
 		const formData = new FormData();
 
 		formData.append("audio", audioBlob, "speech.webm");
-		formData.append("scenario_id", scenarioId.toString());
-		formData.append("turn_index", currentTurn.toString());
+		formData.append("expected_text", expectedText);
 
-		const response = await axiosInstance.post(
-			"/scenarios/speech/submit",
-			formData,
-			{
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			}
-		);
+		if (expectedText !== null) {
+			console.log("Sending audio for turn:", currentTurn, "Expected text:", expectedText);
+			const response = await axiosInstance.post(
+				"/scenarios/speech/submit",
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
 
-		const result = await response;
-		onEvalReceived?.(result.data);
+			const result = await response;
+			onEvalReceived?.(result.data);
+		};
 	};
 
 	return (

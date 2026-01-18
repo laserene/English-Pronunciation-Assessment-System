@@ -76,23 +76,21 @@ async def get_scenario_with_script_lines_service(
 
 async def evaluate_script_line_service(
     filepath: str,
-    user_id: int,
-    scenario_id: int,
-    turn_index: int,
-    db: AsyncSession,
+    expected_text: str,
 ):
-    expected_text = ""
-
     # ASR
     waveform, _ = sf.read(filepath, dtype="float32")
     waveform = torch.from_numpy(waveform)
     transcription = convert_speech_to_text_service(waveform).lower()
 
+    transcription_phoneme = text_to_phonemes(transcription)
+    expected_text_phoneme = text_to_phonemes(expected_text)
+
     return {
         "transcription": transcription,
         "expected_text": expected_text,
-        "transcription_phoneme": text_to_phonemes(transcription),
-        "expected_text_phoneme": text_to_phonemes(expected_text),
-        "wer": wer(expected_text, transcription),
-        "cer": cer(expected_text, transcription),
+        "transcription_phoneme": transcription_phoneme,
+        "expected_text_phoneme": expected_text_phoneme,
+        "wer": wer(expected_text_phoneme, transcription_phoneme),
+        "cer": cer(expected_text_phoneme, transcription_phoneme),
     }
