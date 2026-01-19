@@ -1,12 +1,10 @@
 import { JSX, useRef, useState } from "react";
 import MicVisualizer from "./MicVisualizer.tsx";
-import ChatInput from "./ChatInput.tsx";
 import axiosInstance from "../../../utils/axios.ts";
 import "./index.css";
 
 interface InputModePanelProps {
 	scenarioId: number;
-	currentTurn: number;
 	setCurrentTurn: React.Dispatch<React.SetStateAction<number>>;
 	expectedText: string | null;
 	defaultMode?: "voice" | "typing" | null;
@@ -23,7 +21,6 @@ interface EvalLine {
 }
 
 export default function InputModePanel({
-	currentTurn,
 	setCurrentTurn,
 	expectedText,
 	defaultMode = null,
@@ -188,7 +185,6 @@ export default function InputModePanel({
 						Let's start...
 					</div>
 				)}
-				{inputMode === "typing" && <ChatInput />}
 				<div className="mode-btn-container">
 					<button
 						className={`conversation-btn mode-btn ${inputMode === "voice" ? "active" : ""

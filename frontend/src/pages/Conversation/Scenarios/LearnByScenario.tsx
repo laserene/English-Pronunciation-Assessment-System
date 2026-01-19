@@ -127,7 +127,6 @@ export default function LearnByScenario(): JSX.Element {
                     >
                         {(evalData.length !== (scriptLines.length / 2) || (evalData.length === 0)) && <InputModePanel
                             scenarioId={scenarioId}
-                            currentTurn={currentTurn}
                             setCurrentTurn={setCurrentTurn}
                             expectedText={expectedText}
                             onEvalReceived={handleEvalReceived}
