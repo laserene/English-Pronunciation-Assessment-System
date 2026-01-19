@@ -87,13 +87,13 @@ async def evaluate_script_line_service(
     transcription = convert_speech_to_text_service(waveform).lower()
 
     transcription_phoneme = text_to_phonemes(transcription)
-    expected_text_phoneme = text_to_phonemes(expected_text)
+    expected_phoneme = text_to_phonemes(expected_text)
 
     return {
         "transcription": transcription,
         "expected_text": expected_text,
         "transcription_phoneme": transcription_phoneme,
-        "expected_text_phoneme": expected_text_phoneme,
-        "wer": wer(expected_text_phoneme, transcription_phoneme),
-        "cer": cer(expected_text_phoneme, transcription_phoneme),
+        "expected_phoneme": expected_phoneme,
+        "wer": round(wer(expected_phoneme, transcription_phoneme), 2),
+        "cer": round(cer(expected_phoneme, transcription_phoneme), 2),
     }

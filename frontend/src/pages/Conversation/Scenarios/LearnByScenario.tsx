@@ -105,10 +105,6 @@ export default function LearnByScenario(): JSX.Element {
         }
     }, [evalData.length]);
 
-    const handleCloseFinalResults = () => {
-        setShowFinalResults(false);
-    }
-
     return (
         <div style={{ overflowY: "auto" }}>
             <Header scenario_name={scenarioName} />
@@ -139,17 +135,6 @@ export default function LearnByScenario(): JSX.Element {
                 </InteractionPanel>
             </div>
             <Overlay isOpen={showPerformanceModal} onClose={() => { handleCloseModal() }}>
-                <h2>Speech Evaluation</h2>
-                <div>
-                    - Transcription: {evalData[selectedEvalIndex]?.transcription} <br></br>
-                    - Reference text: {evalData[selectedEvalIndex]?.expected_text} <br></br>
-                    - Transcription phoneme: {evalData[selectedEvalIndex]?.transcription_phoneme} <br></br>
-                    - Reference phoneme: {evalData[selectedEvalIndex]?.expected_phoneme} <br></br>
-                    - WER: {evalData[selectedEvalIndex]?.wer} <br></br>
-                    - CER: {evalData[selectedEvalIndex]?.cer}
-                </div>
-            </Overlay>
-            <Overlay isOpen={showFinalResults} onClose={() => { handleCloseFinalResults() }}>
                 <h2>Speech Evaluation</h2>
                 <div>
                     - Transcription: {evalData[selectedEvalIndex]?.transcription} <br></br>

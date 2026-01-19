@@ -53,7 +53,7 @@ class EvaluateScriptLineResponse(BaseModel):
     transcription_phoneme: str = Field(
         ..., description="Phoneme representation of the transcribed speech"
     )
-    expected_text_phoneme: str = Field(
+    expected_phoneme: str = Field(
         ..., description="Phoneme representation of the expected text"
     )
     wer: float = Field(
