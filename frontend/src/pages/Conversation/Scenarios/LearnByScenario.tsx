@@ -60,10 +60,6 @@ export default function LearnByScenario(): JSX.Element {
 
     console.log("Script Lines: ", scriptLines);
 
-    const handleEvalReceived = (data: EvalLine) => {
-        setEvalData(prev => [...prev, data]);
-    };
-
     const handleShowEval = (index: number) => {
         setShowPerformanceModal(true);
         setSelectedEvalIndex(index);
@@ -88,6 +84,31 @@ export default function LearnByScenario(): JSX.Element {
             : 0;
         return avg;
     }
+
+    const onSendAudio = async (audioBlob: Blob, expected_text: string) => {
+        const formData = new FormData();
+        formData.append("audio", audioBlob, "speech.webm");
+        formData.append("expected_text", expected_text);
+
+        const evaluationPromise = axiosInstance.post(
+            "/scenarios/speech/submit",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+
+        setCurrentTurn((prev) => prev + 1);
+
+        try {
+            const response = await evaluationPromise;
+            setEvalData(prev => [...prev, response.data]);
+        } catch (error) {
+            console.error("Evaluation failed:", error);
+        }
+    };
 
     useEffect(() => {
         if ((evalData.length === scriptLines.length / 2) && evalData.length !== 0) {
@@ -125,7 +146,7 @@ export default function LearnByScenario(): JSX.Element {
                             scenarioId={scenarioId}
                             setCurrentTurn={setCurrentTurn}
                             expectedText={expectedText}
-                            onEvalReceived={handleEvalReceived}
+                            onSendAudio={onSendAudio}
                         />}
 
                         {(evalData.length === (scriptLines.length / 2)) && (

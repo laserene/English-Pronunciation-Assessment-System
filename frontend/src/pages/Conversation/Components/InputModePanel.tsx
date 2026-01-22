@@ -1,15 +1,6 @@
 import { JSX, useRef, useState } from "react";
 import MicVisualizer from "./MicVisualizer.tsx";
-import axiosInstance from "../../../utils/axios.ts";
 import "./index.css";
-
-interface InputModePanelProps {
-	scenarioId: number;
-	setCurrentTurn: React.Dispatch<React.SetStateAction<number>>;
-	expectedText: string | null;
-	defaultMode?: "voice" | "typing" | null;
-	onEvalReceived?: (data: EvalLine) => void;
-}
 
 interface EvalLine {
 	transcription: string;
@@ -20,11 +11,17 @@ interface EvalLine {
 	cer: number;
 }
 
+interface InputModePanelProps {
+	scenarioId: number;
+	expectedText: string | null;
+	defaultMode?: "voice" | "typing" | null;
+	onSendAudio?: (audioBlob: Blob, expected_text: string) => void;
+}
+
 export default function InputModePanel({
-	setCurrentTurn,
 	expectedText,
 	defaultMode = null,
-	onEvalReceived
+	onSendAudio,
 }: InputModePanelProps): JSX.Element {
 	const [inputMode, onModeChange] = useState<"voice" | "typing" | null>(defaultMode);
 	const expandedHeight = "auto";
@@ -61,8 +58,7 @@ export default function InputModePanel({
 				type: mediaRecorder.mimeType,
 			});
 
-			sendAudioToBackend(audioBlob);
-			setCurrentTurn((prev) => prev + 1);
+			onSendAudio?.(audioBlob, expectedText);
 		};
 
 		// Audio Visualizer
@@ -144,28 +140,6 @@ export default function InputModePanel({
 			audioContextRef.current.close();
 			audioContextRef.current = null;
 		}
-	};
-
-	const sendAudioToBackend = async (audioBlob: Blob) => {
-		const formData = new FormData();
-
-		formData.append("audio", audioBlob, "speech.webm");
-		formData.append("expected_text", expectedText);
-
-		if (expectedText !== null) {
-			const response = await axiosInstance.post(
-				"/scenarios/speech/submit",
-				formData,
-				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			);
-
-			const result = await response;
-			onEvalReceived?.(result.data);
-		};
 	};
 
 	return (
