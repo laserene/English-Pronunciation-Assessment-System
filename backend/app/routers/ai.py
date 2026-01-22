@@ -1,3 +1,6 @@
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+
 from fastapi import APIRouter, Depends
 from starlette import status
 
@@ -6,6 +9,8 @@ from app.schemas.ai import TextToSpeechRequest, TextToSpeechResponse
 from app.services.elevenlabs import text_to_speech_service
 
 router = APIRouter(prefix="/ai", tags=["ai"])
+
+executor = ThreadPoolExecutor(max_workers=4)
 
 
 @router.post(
@@ -18,7 +23,10 @@ async def convert_text_to_speech(
     Get the authenticated user's information.
     """
     try:
-        audio_path = text_to_speech_service(text=request.text)
+        loop = asyncio.get_event_loop()
+        audio_path = await loop.run_in_executor(
+            executor, text_to_speech_service, request.text
+        )
         return {"audio_path": audio_path}
     except Exception as e:
         return {"error": f"Text-to-speech conversion failed: {str(e)}"}

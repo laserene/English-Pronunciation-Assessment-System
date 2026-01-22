@@ -77,7 +77,7 @@ async def get_scenario_with_script_lines_service(
     return (scenarios.scenario_name, scenarios.vocabulary, script_lines)
 
 
-async def evaluate_script_line_service(
+def evaluate_script_line_service(
     filepath: str,
     expected_text: str,
 ):

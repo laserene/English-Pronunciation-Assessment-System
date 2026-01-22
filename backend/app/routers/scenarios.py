@@ -1,7 +1,9 @@
+import asyncio
 import json
 import os
 import uuid
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Optional
 
@@ -25,6 +27,8 @@ from app.services.scenarios import (
 )
 
 router = APIRouter(prefix="/scenarios", tags=["scenarios"])
+
+executor = ThreadPoolExecutor(max_workers=4)
 
 UPLOAD_DIR = Path("uploads/scenarios")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -174,11 +178,14 @@ async def evaluate_speech(
             temp_input_path = f.name  # full path to the temp file
 
         temp_wav_path = temp_input_path.replace(suffix, ".wav")
-        convert_to_wav(temp_input_path, temp_wav_path)
 
-        evaluation = await evaluate_script_line_service(
-            filepath=temp_wav_path,
-            expected_text=expected_text,
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(
+            executor, convert_to_wav, temp_input_path, temp_wav_path
+        )
+
+        evaluation = await loop.run_in_executor(
+            executor, evaluate_script_line_service, temp_wav_path, expected_text
         )
 
         return evaluation
