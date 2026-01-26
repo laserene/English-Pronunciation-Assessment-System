@@ -24,7 +24,7 @@ def text_to_speech_service(text: str) -> str:
 
     audio_stream = elevenlabs.text_to_speech.convert(
         text=text,
-        voice_id="8eshQulzWsENvVIGmyBJ",
+        voice_id=settings.elevenlabs_voice_id,
         model_id="eleven_multilingual_v2",
         output_format="mp3_44100_128",
     )

@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int
     refresh_token_expire_days: int
     elevenlabs_api_key: str
+    elevenlabs_voice_id: str
     model_config = SettingsConfigDict(env_file=".env")
 
 
