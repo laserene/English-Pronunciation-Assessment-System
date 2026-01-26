@@ -2,7 +2,6 @@ import { JSX } from "react";
 import { useNavigate } from "react-router-dom";
 import CarouselPanel from "./CarouselPanel.tsx";
 import WERImage from "../../assets/images/words.jpg"
-import PlaceholderImage from "../../assets/images/17a5f1b042267ce046b552527c248b94.jpg"
 import "./index.css";
 
 export default function DashboardPanel(): JSX.Element {
@@ -23,7 +22,7 @@ export default function DashboardPanel(): JSX.Element {
                         key={item.id}
                         className="carousel-item large-carousel-item"
                         style={{
-                            backgroundImage: `url(${item.background_url || PlaceholderImage})`,
+                            backgroundImage: `url(${item.background_url})`,
                             backgroundSize: "cover",
                             backgroundPosition: "center",
                         }}
