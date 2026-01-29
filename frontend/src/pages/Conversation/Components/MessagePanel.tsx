@@ -1,5 +1,6 @@
 import { JSX, useEffect, useState } from "react";
 import axiosInstance from "../../../utils/axios";
+import { LAppDelegate } from "../../../live2d/src/lappdelegate";
 import "./index.css";
 
 interface ScriptLine {
@@ -70,7 +71,33 @@ export default function MessagePanel({
 			const audio = new Audio(audioUrl.data.audio_path);
 			audio.preload = "auto";
 
-			// const emotion = scripts[currentTurn - 1]?.emotion || "neutral";
+			// Set emotions
+			const emotion = scripts[currentTurn - 1]?.emotion || "neutral";
+			const delegate = LAppDelegate.getInstance();
+			const subdelegate = delegate.getSubdelegateAt(0);
+
+			if (!subdelegate) {
+				console.error("Subdelegate not found");
+				return;
+			}
+
+			const live2dManager = subdelegate.getLive2DManager();
+
+			if (!live2dManager) {
+				console.error("Live2D manager not found");
+				return;
+			}
+
+			const model = live2dManager.getModelAt(0);
+
+			if (!model) {
+				console.error("Model not found");
+				return;
+			}
+
+			console.log("Setting emotion:", emotion);
+			model.setEmotionByName(emotion);
+			console.log("Emotion set successfully");
 
 			audio.play();
 			audio.onended = () => {

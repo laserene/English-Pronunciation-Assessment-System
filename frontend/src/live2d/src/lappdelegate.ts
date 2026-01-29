@@ -106,6 +106,23 @@ export class LAppDelegate {
   }
 
   /**
+   * Get subdelegates
+   */
+  public getSubdelegates(): csmVector<LAppSubdelegate> {
+    return this._subdelegates;
+  }
+
+  /**
+   * Get subdelegate at index
+   */
+  public getSubdelegateAt(index: number): LAppSubdelegate | null {
+    if (this._subdelegates && index < this._subdelegates.getSize()) {
+      return this._subdelegates.at(index);
+    }
+    return null;
+  }
+
+  /**
    * 実行処理。
    */
   public run(): void {

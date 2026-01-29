@@ -104,6 +104,29 @@ export class LAppModel extends CubismUserModel {
       });
   }
 
+  public setEmotionByName(emotionName: string): void {
+    const EmotionMap: { [key: string]: string } = {
+    	'happy': 'F01',
+        'sad': 'F02',
+        'angry': 'F03',
+        'surprised': 'F04',
+        'nervous': 'F05',
+        'thinking': 'F06',
+        'sleepy': 'F07',
+        'excited': 'F08'
+    };
+
+    const expressionId = EmotionMap[emotionName.toLowerCase()];
+    
+    if (expressionId) {
+      this.setExpression(expressionId);
+    } else {
+      if (this._debugMode) {
+        LAppPal.printMessage(`[APP]emotion '${emotionName}' not found in EmotionMap`);
+      }
+    }
+  }
+
   /**
    * model3.jsonからモデルを生成する。
    * model3.jsonの記述に従ってモデル生成、モーション、物理演算などのコンポーネント生成を行う。

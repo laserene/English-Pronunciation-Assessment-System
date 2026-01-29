@@ -126,6 +126,8 @@ export default function LearnByScenario(): JSX.Element {
         }
     }, [evalData.length]);
 
+    console.log(scriptLines)
+
     return (
         <div style={{ overflowY: "auto" }}>
             <Header scenario_name={scenarioName} />
@@ -144,12 +146,11 @@ export default function LearnByScenario(): JSX.Element {
                     >
                         {(evalData.length !== (scriptLines.length / 2) || (evalData.length === 0)) && <InputModePanel
                             scenarioId={scenarioId}
-                            setCurrentTurn={setCurrentTurn}
                             expectedText={expectedText}
                             onSendAudio={onSendAudio}
                         />}
 
-                        {(evalData.length === (scriptLines.length / 2)) && (
+                        {(evalData.length === (scriptLines.length / 2) && evalData.length !== 0) && (
                             <FinishScenarioPanel onShowFinalResults={handleViewFinalResults} />
                         )}
                     </MessagePanel>

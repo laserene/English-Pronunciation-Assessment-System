@@ -40,6 +40,23 @@ export class LAppLive2DManager {
   }
 
   /**
+   * Get models
+   */
+  public getModels(): csmVector<LAppModel> {
+    return this._models;
+  }
+
+  /**
+   * Get model at index
+   */
+  public getModelAt(index: number): LAppModel | null {
+    if (this._models && index < this._models.getSize()) {
+      return this._models.at(index);
+    }
+    return null;
+  }
+
+  /**
    * 画面をタップした時の処理
    *
    * @param x 画面のX座標
