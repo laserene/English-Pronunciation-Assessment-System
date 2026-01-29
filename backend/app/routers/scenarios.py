@@ -149,6 +149,7 @@ async def get_scenario_with_script_lines(
             "script_lines": script_lines,
         }
     except Exception as e:
+        print(e)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to retrieve scenario scripts: {str(e)}",

@@ -9,10 +9,12 @@ load_dotenv()
 llm = BaseLLM(model="groq/moonshotai/kimi-k2-instruct")
 
 
-async def generate_json(prompt: str) -> str:
-    response = await llm.achat(prompt)
+def generate_json(prompt: str) -> str:
+    response = llm.chat(prompt)
     try:
         parsed_response = json.loads(response)
         return parsed_response
-    except json.JSONDecodeError:
+    except json.JSONDecodeError as e:
         raise ValueError(f"Failed to parse LLM response as JSON: {response}")
+    except Exception as e:
+        raise Exception(f"Failed to generate scripts: {e}")
