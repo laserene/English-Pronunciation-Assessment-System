@@ -99,12 +99,20 @@ def evaluate_script_line_service(
 
     transcription_phoneme = text_to_phonemes(transcription)
     expected_phoneme = text_to_phonemes(expected_text)
+    wer_score = round(wer(expected_phoneme, transcription_phoneme), 2)
+    cer_score = round(cer(expected_phoneme, transcription_phoneme), 2)
+
+    if wer_score > 1:
+        wer_score = 1
+
+    if cer_score > 1:
+        cer_score = 1
 
     return {
         "transcription": transcription,
         "expected_text": expected_text,
         "transcription_phoneme": transcription_phoneme,
         "expected_phoneme": expected_phoneme,
-        "wer": round(wer(expected_phoneme, transcription_phoneme), 2),
-        "cer": round(cer(expected_phoneme, transcription_phoneme), 2),
+        "wer": wer_score,
+        "cer": cer_score,
     }
