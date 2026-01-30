@@ -18,3 +18,13 @@ def generate_json(prompt: str) -> str:
         raise ValueError(f"Failed to parse LLM response as JSON: {response}")
     except Exception as e:
         raise Exception(f"Failed to generate scripts: {e}")
+
+
+def generate_recommendation_from_performances(prompt: str):
+    try:
+        response = llm.chat(prompt)
+        return response
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Failed to parse LLM response as JSON: {response}")
+    except Exception as e:
+        raise Exception(f"Failed to generate scripts: {e}")

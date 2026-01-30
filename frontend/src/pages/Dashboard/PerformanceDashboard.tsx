@@ -90,6 +90,8 @@ export default function PerformanceDashboard(): JSX.Element {
                         </div>
                     </div>
                     <PerformanceChart metricsData={performanceData} />
+                    <div style={{ marginTop: "20px" }}>
+                    </div>
                 </div>
             </div>
         </div>

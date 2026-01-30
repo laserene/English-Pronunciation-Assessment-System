@@ -1,10 +1,15 @@
 import { JSX } from "react";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 
 
 export default function FinishScenarioPanel({ onShowFinalResults }: { onShowFinalResults: () => void }): JSX.Element {
     const expandedHeight = "220px";
+    const navigate = useNavigate();
 
+    const handleNewSession = () => {
+        navigate(0);
+    };
     return (
         <div
             className="interaction-block-content expanded"
@@ -20,7 +25,7 @@ export default function FinishScenarioPanel({ onShowFinalResults }: { onShowFina
             <div className="finish-scenario-btn-area">
                 <button
                     className="conversation-btn finish-scenario-btn"
-                    onClick={() => window.location.reload()}
+                    onClick={() => handleNewSession()}
                 >New Session</button>
                 <button
                     className="conversation-btn finish-scenario-btn"
