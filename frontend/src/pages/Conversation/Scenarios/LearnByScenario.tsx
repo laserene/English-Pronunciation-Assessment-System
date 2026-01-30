@@ -67,6 +67,7 @@ export default function LearnByScenario(): JSX.Element {
 
     const handleCloseModal = () => {
         setShowPerformanceModal(false);
+        setShowFinalResults(false);
     };
 
     const currentScriptLine = scriptLines.find(
@@ -110,11 +111,15 @@ export default function LearnByScenario(): JSX.Element {
         }
     };
 
+    const [meanWer, setMeanWer] = useState(0)
+    const [meanCer, setMeanCer] = useState(0)
     useEffect(() => {
         if ((evalData.length === scriptLines.length / 2) && evalData.length !== 0) {
             const werSeries = evalData.map(e => e.wer);
             const cerSeries = evalData.map(e => e.cer);
 
+            setMeanWer(calculateAvg(werSeries))
+            setMeanCer(calculateAvg(cerSeries))
             const saveSpeakingResults = async () => {
                 await axiosInstance.post(`/performances/`, {
                     wer: calculateAvg(werSeries),
@@ -165,6 +170,13 @@ export default function LearnByScenario(): JSX.Element {
                     - Reference phoneme: {evalData[selectedEvalIndex]?.expected_phoneme} <br></br>
                     - WER: {evalData[selectedEvalIndex]?.wer} <br></br>
                     - CER: {evalData[selectedEvalIndex]?.cer}
+                </div>
+            </Overlay>
+            <Overlay isOpen={showFinalResults} onClose={() => { handleCloseModal() }}>
+                <h2>Overall Result</h2>
+                <div>
+                    - WER: {meanWer.toFixed(3)} <br></br>
+                    - CER: {meanCer.toFixed(3)}
                 </div>
             </Overlay>
         </div>
