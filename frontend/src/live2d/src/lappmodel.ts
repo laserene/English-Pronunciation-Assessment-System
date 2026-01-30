@@ -106,14 +106,14 @@ export class LAppModel extends CubismUserModel {
 
   public setEmotionByName(emotionName: string): void {
     const EmotionMap: { [key: string]: string } = {
-    	'happy': 'F01',
-        'sad': 'F02',
-        'angry': 'F03',
-        'surprised': 'F04',
-        'nervous': 'F05',
-        'thinking': 'F06',
-        'sleepy': 'F07',
-        'excited': 'F08'
+    	'neutral': 'F01',
+      'happy': 'F02',
+      'annoyed': 'F03',
+      'sad': 'F04',
+      'enjoying': 'F05',
+      'surprised': 'F06',
+      'shy': 'F07',
+      'disappointed': 'F08'
     };
 
     const expressionId = EmotionMap[emotionName.toLowerCase()];
@@ -765,6 +765,7 @@ export class LAppModel extends CubismUserModel {
     for (let i = 0; i < this._expressions.getSize(); i++) {
       if (i == no) {
         const name: string = this._expressions._keyValues[i].first;
+        console.log("Emotion set as ", name)
         this.setExpression(name);
         return;
       }

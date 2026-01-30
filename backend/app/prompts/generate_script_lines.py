@@ -43,8 +43,7 @@ Instructions:
 - Start turn_index at 1 and increment sequentially.
 - Use the provided vocabulary naturally (not all words are required).
 - Include "emotion" ONLY for ai messages.
-- Possible emotions: neutral, annoyance, happy, rejoice, surprised, shy.
-- Vary emotions when natural.
+- Possible emotions: neutral, happy, annoyed, sad, enjoying, surprised, shy, disappointed.
 - Do NOT include any fields other than:
   scenario_id, speaker, turn_index, expected_text, emotion.
 
