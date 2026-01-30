@@ -1,11 +1,6 @@
-from .scenarios import Scenario
-from .users import User
+from .scenario import Scenario
+from .user import User
 from .performance import Performance
-from .phoneme_error import PhonemeError
+from .vocabulary import Vocabulary
 
-__all__ = [
-    "User",
-    "Scenario",
-    "Performance",
-    "PhonemeError",
-]
+__all__ = ["User", "Scenario", "Performance", "Vocabulary"]

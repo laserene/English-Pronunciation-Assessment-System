@@ -12,7 +12,6 @@ class Scenario(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 
     scenario_name = Column(String, nullable=False)
-    vocabulary = Column(JSON, nullable=False)
     level = Column(
         Enum("beginner", "intermediate", "advanced", name="level_type"),
         nullable=False,

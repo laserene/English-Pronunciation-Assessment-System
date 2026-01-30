@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.config import settings
-from app.models import Scenario
+from app.models import Scenario, Vocabulary
 from app.prompts import generate_script_lines_prompt
 from app.services.llm import generate_json
 from app.services.wav2vec import convert_speech_to_text_service
@@ -28,12 +28,17 @@ async def create_scenario_service(
     new_scenario = Scenario(
         user_id=user_id,
         scenario_name=scenario_name,
-        vocabulary=vocabulary,
         level=level,
         description=description,
         image_path=image_path,
     )
     db.add(new_scenario)
+    await db.flush()
+
+    for word in vocabulary:
+        new_word = Vocabulary(scenario_id=new_scenario.id, word=word)
+        db.add(new_word)
+
     await db.commit()
     await db.refresh(new_scenario)
     return new_scenario
@@ -64,17 +69,23 @@ async def get_scenario_with_script_lines_service(
     if not scenarios:
         raise Exception("Scenario not found or not authorized by user.")
 
+    vocabulary = await db.execute(
+        select(Vocabulary).where(Vocabulary.scenario_id == scenario_id)
+    )
+    vocabulary = vocabulary.scalars().all()
+    vocabulary_words = [v.word for v in vocabulary]
+
     formatted_prompt = generate_script_lines_prompt.format(
         scenario_id=scenario_id,
         scenario_name=scenarios.scenario_name,
-        vocabulary=scenarios.vocabulary,
+        vocabulary=vocabulary_words,
         level=scenarios.level,
         description=scenarios.description,
     )
     script_lines_response = generate_json(formatted_prompt)
     script_lines = script_lines_response.get("script_lines", [])
 
-    return (scenarios.scenario_name, scenarios.vocabulary, script_lines)
+    return (scenarios.scenario_name, vocabulary_words, script_lines)
 
 
 def evaluate_script_line_service(
