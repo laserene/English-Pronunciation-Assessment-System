@@ -27,6 +27,7 @@ interface EvalLine {
 }
 
 export default function LearnByScenario(): JSX.Element {
+    const [reset, setReset] = useState(1)
     const { scenario_id } = useParams<{ scenario_id: string }>();
     const [scriptLines, setScriptLines] = useState<ScriptLine[]>([]);
     const [scenarioName, setScenarioName] = useState<string>("");
@@ -56,7 +57,7 @@ export default function LearnByScenario(): JSX.Element {
         };
 
         fetchScenarioWithScriptLines();
-    }, [scenarioId]);
+    }, [scenarioId, reset]);
 
     console.log("Script Lines: ", scriptLines);
 
@@ -110,6 +111,13 @@ export default function LearnByScenario(): JSX.Element {
             console.error("Evaluation failed:", error);
         }
     };
+
+    const handleReset = async () => {
+        setScriptLines([])
+        setCurrentTurn(1)
+        setEvalData([])
+        setReset(prev => prev + 1);
+    }
 
     const [meanWer, setMeanWer] = useState(0)
     const [meanCer, setMeanCer] = useState(0)
