@@ -1,3 +1,5 @@
+
+
 # English Pronunciation Assessment System
 
 An AI-powered system for evaluating English pronunciation through interactive conversations with an AI character. The system analyzes user speech, converts it into phoneme representations, and evaluates pronunciation quality while maintaining a real-time conversational experience.
@@ -87,4 +89,8 @@ npm run start
 ```
 
 ## Demo Video
+https://github.com/user-attachments/assets/d250909c-5172-47b0-8249-4ed4f7ff374a
+
+
+
 
