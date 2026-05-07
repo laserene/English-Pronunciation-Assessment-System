@@ -41,7 +41,7 @@ Instructions:
 - Generate a coherent conversation based on the scenario.
 - Alternate speakers strictly between "user" and "ai".
 - Start turn_index at 1 and increment sequentially.
-- Use the provided vocabulary naturally (not all words are required).
+- Try to use as many vocabulary words from the provided list as possible in natural manner (not all words are required).
 - Include "emotion" ONLY for ai messages.
 - Possible emotions: neutral, happy, annoyed, sad, enjoying, surprised, shy, disappointed.
 - Do NOT include any fields other than:

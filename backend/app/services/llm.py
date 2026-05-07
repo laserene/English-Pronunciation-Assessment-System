@@ -6,7 +6,7 @@ from app.llm import BaseLLM
 
 load_dotenv()
 
-llm = BaseLLM(model="groq/moonshotai/kimi-k2-instruct")
+llm = BaseLLM(model="groq/llama-3.3-70b-versatile")
 
 
 def generate_json(prompt: str) -> str:
